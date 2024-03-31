@@ -1,0 +1,72 @@
+.table-horarios {
+    border-radius: 12px; /* Arredonda as bordas da "tabela" */
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    overflow: hidden;
+}
+
+.nome-servicos {
+    display: flex;
+    justify-content: center;
+    border-radius: 12px; 
+    width: 100%;
+}
+
+.horarios{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.horario-row{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.header-cell {
+    flex-grow: 1;
+    padding: 12px 16px;
+    width: calc(100%/6);
+    border-right: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+    border-bottom: 1px solid var(--White-Base-02, #E8E7E7);
+    display: flex;
+    justify-content: center;
+}
+.horario-cell{
+    width: 100%;
+    flex-grow: 1;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--White-Base-02, #E8E7E7);
+    border-right: 1px solid var(--White-Base-02, #E8E7E7);
+}
+
+.horario-row:last-of-type .horario-cell {
+    border-right: none; 
+}
+
+.header-cell:last-child{
+    border-right: none;
+}
+.horario-cell:last-child {
+    border-bottom: none;
+}
+
+.nome-servicos div p,.horario-row div p {
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.horario-cell p{
+    border-radius: 6px;
+    border: 1px solid var(--Sucesso-Verde-03, #81C991);
+    background: var(--Sucesso-Verde-04, #CCEED4);
+    padding: 7px 8px;
+    cursor: pointer;
+    text-align:initial;
+}

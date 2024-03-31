@@ -1,0 +1,85 @@
+.container-home{
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.telaPrincipal{
+    height: 100vh;
+    width: 80%;
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.info-home{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-home p{
+    color: var(--Primary-Vermelho-02, #C9615A);
+font-family: "Montserrat";
+font-size: 22px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+
+.icons{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+.bola{
+    border-radius: 100px;
+    display: flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 100px;
+    border: 1.5px solid var(--Primary-Vermelho-04, #FFDEDE);
+    background: var(--Primary-Vermelho-05, #FDF7F7);
+    color: #C9615A;
+}
+
+.info-principal{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-calendar{
+height: 57%;
+display: flex;
+flex-direction: row;
+gap: 26px;
+}
+.table-calendar h2{
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.tabela-horario {
+    position: relative;
+  }
+  
+  .title-tabela {
+    position: absolute;
+    top: -30px;
+  }
+  
+.info-horario{
+height: 43%;
+
+}

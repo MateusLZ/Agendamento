@@ -1,0 +1,67 @@
+.menu-rota{
+    height: 100vh;
+    width: 20%;
+    border-right: 1px solid #E8E7E7;
+    background-color: #FBFBFB;
+    padding: 16px 10px 32px 10px;
+}
+
+.user-profile{
+    border-top: 2px solid #E8E7E7;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    width: 90%;
+    
+}
+.user-info{
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+} 
+
+.nome-user p{
+    color: #747474;
+    font-family:"Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+}
+.navegacao{
+    height: 65%;
+    display: flex;
+    width: 100%;
+}
+.header-menu{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    width: 100%;
+}
+
+.name-salao{
+    display: flex;
+    align-items: center;
+    height: 20%;
+    padding: 20px, 20px, 14px, 20px;
+    gap: 13px;
+}
+
+.title-salao{
+    font-family: "Cardo", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 28px;
+    color: #C9615A;
+
+}
+
+.logo-salao{
+    border-radius: 52px;
+    height: 70px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+}

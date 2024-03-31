@@ -1,0 +1,22 @@
+.container-home{
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.telaPrincipal{
+    height: 100vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cadastro-produto{
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}

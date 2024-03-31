@@ -1,0 +1,45 @@
+
+
+.lista-produtos h2{
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.produtosUL{
+    display: flex;
+    flex-wrap: wrap;
+}
+.produtos{
+    width: calc(33.33% - 20px); /* Define a largura de cada produto para ocupar cerca de 1/3 do contêiner, com algum espaço entre eles */
+    height: 200px;
+    margin: 10px; /* Espaçamento entre os produtos */
+    background-color: white; /* Cor de fundo do produto */
+    border: 1px solid black; /* Borda ao redor do produto */
+    border-radius: 12px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+
+    }
+
+
+.img-produtos{
+    height: 70px;
+}
+.btn-editar{
+    color: black;
+    padding: 2px 15px;
+    background-color: rgb(98, 0, 255);
+    border-radius: 12px;
+    cursor: pointer;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}

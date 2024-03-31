@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    background-color: #f0f2f5;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+ul {
+    padding: 0px;
+    list-style: none;
+  }
+
+a{
+    list-style: none;
+    text-decoration: none;
+}
+p,ul{
+    margin: 0px;
+}

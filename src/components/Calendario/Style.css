@@ -1,0 +1,118 @@
+
+.current-date{
+    color: var(--Black-Cinza-04, #747474);
+font-family:"Montserrat", sans-serif;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.wrapper{
+  width: 365px;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 303px;
+}
+.wrapper header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .icons{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+}
+header .icons span{
+    display: flex;
+    width: 25px;
+    height: 25px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--White-Base-01, #CCC);
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
+}
+.chevron{
+    width: 18px;
+    height: 15px;
+    color: #262626;
+}
+
+header .icons span:hover{
+  background: #f2f2f2;
+}
+header .current-date{
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+.calendar{
+  font-family:"Montserrat", sans-serif;
+
+
+}
+.calendar ul{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  text-align: center;
+
+}
+.calendar .days{
+  margin-bottom: 0px;
+  display: flex;
+  flex-wrap: wrap
+}
+.calendar li{
+  color: #333;
+  width: calc(100% / 7);
+  margin-bottom: 16px; /* Espaçamento entre as linhas */
+  font-size: 15px;
+
+
+}
+.calendar .weeks li{
+  cursor: default;
+  color: var(--Black-Cinza-04, #747474);
+text-align: center;
+font-family:"Montserrat", sans-serif;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.calendar .days li{
+  z-index: 1;
+  cursor: pointer;
+  position: relative;
+}
+.days li.inactive{
+  color: #aaa;
+}
+.days li.active{
+  color: #fff;
+}
+.days li::before{
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 40px;
+  width: 40px;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.days li.active::before{
+  background: #C9615A
+}
+.days li:not(.active):hover::before{
+  background: #f2f2f2;
+}
