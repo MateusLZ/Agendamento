@@ -97,7 +97,7 @@ const Produto = ({ onProdutoAdicionado }) => {
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
             <InputCustomizado
                     name="nomeProduto"
-                    placeholder="Nome do serviço"
+                    placeholder="Nome do serviço" 
                     color="black"
                     type="string"
                     required

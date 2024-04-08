@@ -19,6 +19,6 @@ a{
     list-style: none;
     text-decoration: none;
 }
-p,ul{
+p,ul,h2{
     margin: 0px;
 }

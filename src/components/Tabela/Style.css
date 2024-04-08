@@ -34,6 +34,7 @@
     display: flex;
     justify-content: center;
 }
+
 .horario-cell{
     width: 100%;
     flex-grow: 1;
@@ -41,6 +42,7 @@
     border-bottom: 1px solid var(--White-Base-02, #E8E7E7);
     border-right: 1px solid var(--White-Base-02, #E8E7E7);
 }
+
 
 .horario-row:last-of-type .horario-cell {
     border-right: none; 
@@ -69,4 +71,123 @@
     padding: 7px 8px;
     cursor: pointer;
     text-align:initial;
+    transition: background-color 0.5s ease;
+
 }
+.horario-cell p:hover{
+    background: var(--Sucesso-Verde-04, #93daa5);
+
+}
+.modal-table p{
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    line-height: normal;
+}
+
+.modal-table-conteudo{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.title-modal-table h3{
+    color: var(--Primary-Vermelho-02, #C9615A);
+
+    /* Títulos/H3 Heading */
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.txt-modal-table{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-modal-table{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-cinza{
+    color: var(--Black-Cinza-04, #747474);
+    font-weight: 400;
+}
+.color-preto{
+    font-weight: 500;
+    color: var(--Black-Cinza-03, #454545);
+}
+.color-vermelho{
+    font-weight: 500;
+    color: var(--Primary-Vermelho-02, #C9615A);
+}
+
+.serv-hora{
+    display: flex;
+    gap: 12px;
+}
+
+.buttonPVerd{
+    padding: 7px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--Sucesso-Verde-03, #81C991);
+    background: var(--Sucesso-Verde-04, #CCEED4);
+    width: 100%;
+
+}
+
+.buttonPCinza{
+    padding: 7px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+    width: 100%;
+}
+
+.buttonPCancelar{
+    padding: 7px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+.buttonPCancelar:hover{
+    background: var(--White-Base-03, #F0F0F0);
+    color: var(--Black-Cinza-03, #454545);
+}
+.buttonPVermelho{
+    padding: 7px 18px;
+    border-radius: 4px;
+    border: 1px solid var(--Primary-Vermelho-02, #C9615A);
+    background: var(--White-Base-05, #FFF);
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+
+}
+.buttonPVermelho:hover{
+    color: var(--White-Base-05, #FFF);
+    background: var(--Primary-Vermelho-02, #C9615A);
+}
+
+.button-modal-table{
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+}
+.flex-gap-12{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.horario-ocupado {
+    pointer-events: none; 
+    opacity: 0.5; 
+  }
+

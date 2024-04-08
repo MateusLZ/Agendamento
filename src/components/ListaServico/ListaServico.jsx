@@ -12,7 +12,7 @@ import "./Style.css"
 
 const ListaServico = ({ produtoAdicionado }) => {
     const [produtos, setProdutos] = useState([]);
-    const [imgURLs, setImgURLs] = useState({});
+    const [imgURLs, setImgURLs] = useState({}); 
     const { userIsAdmin } = useContext(UserContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nomeProduto, setNomeProduto] = useState("");

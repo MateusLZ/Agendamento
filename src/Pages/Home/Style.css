@@ -56,12 +56,11 @@ line-height: normal;
 }
 
 .table-calendar{
-height: 57%;
 display: flex;
 flex-direction: row;
 gap: 26px;
 }
-.table-calendar h2{
+.table-calendar h2,.title-agenda{
     color: var(--Black-Cinza-03, #454545);
     font-family: "Montserrat";
     font-size: 18px;
@@ -81,5 +80,8 @@ gap: 26px;
   
 .info-horario{
 height: 43%;
-
+padding-top: 32px;
+display: flex;
+flex-direction: column;
+gap: 10px;
 }

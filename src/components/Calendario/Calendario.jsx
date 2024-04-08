@@ -2,11 +2,19 @@ import React, { useState, useEffect } from 'react';
 import "./Style.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
-function MeuCalendario() {
+function MeuCalendario({ onDateClick }) {
   const [currYear, setCurrYear] = useState(new Date().getFullYear());
   const [currMonth, setCurrMonth] = useState(new Date().getMonth());
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    // Definir a data atual como a data selecionada quando o componente for montado
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+    setSelectedDate(today);
+    onDateClick(formattedDate);
+  }, []); // [] significa que este efeito ocorrerá apenas uma vez, quando o componente for montado
 
   useEffect(() => {
     renderCalendar();
@@ -71,6 +79,7 @@ function MeuCalendario() {
 
   const handleDateClick = (day, liElement) => {
     const clickedDate = new Date(currYear, currMonth, day);
+    const formattedDate = clickedDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
     setSelectedDate(clickedDate);
 
     // Remover classe 'active' de todos os elementos
@@ -79,8 +88,7 @@ function MeuCalendario() {
 
     // Adicionar classe 'active' apenas ao elemento clicado
     liElement.classList.add('active');
-
-    console.log('Clicked on date:', clickedDate);
+    onDateClick(formattedDate);
   };
 
   const months = [

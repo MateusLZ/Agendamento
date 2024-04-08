@@ -8,9 +8,10 @@ const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [userName, setUserName] = useState(""); 
-  const [userEmail, setEmailUser] = useState(""); 
+  const [userEmail, setEmailUser] = useState("");
+  const [userId, setUserId] = useState(""); 
   const [userDataLoaded, setUserDataLoaded] = useState(false); 
-  console.log(userName)
+
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -59,7 +60,8 @@ const UserProvider = ({ children }) => {
           },
         });
 
-        const { userName, name, isAdmin } = response.data; 
+        const {userId, userName, name, isAdmin } = response.data; 
+        setUserId(userId);
         setEmailUser(name);
         setUserName(userName);
         setUserIsAdmin(isAdmin);
@@ -81,6 +83,7 @@ const UserProvider = ({ children }) => {
     setToken,
     userIsAdmin,
     userEmail,
+    userId,
     userName,
     logout,
     login,
