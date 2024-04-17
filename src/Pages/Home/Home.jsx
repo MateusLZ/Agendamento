@@ -12,7 +12,7 @@ import Agendamentos from "../../components/Agendamentos/Agendamentos.jsx";
 function Home() { 
   const [selectedDate, setSelectedDate] = useState(null);
   const [exclusao, setExclusao] = useState(false);
-  const { userName, token } = useContext(UserContext);
+  const { userName,userDataLoaded, token } = useContext(UserContext);
 
 
   const handleDateSelect = (date) => {
@@ -30,6 +30,9 @@ function Home() {
 
   return (
     <div className="container-home">
+      <div className="div-container">
+
+</div>
       <Navegacao />
 
       <div className="telaPrincipal">

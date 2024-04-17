@@ -17,10 +17,19 @@ function Servicos() {
 };
 
   return (
-    <div className="container-home">
+    <div className="container-home-service">
+      <div className="div-container">
+
+      </div>
         <Navegacao/>
 
-      <div className="telaPrincipal">
+      <div className="telaPrincipal-service">
+
+      <div className="header-service">
+          <div>
+            <p className="title-header">Serviços oferecidos</p>
+          </div>
+          <div className="icons">
 
           <div className="cadastro-produto">
             {userIsAdmin && (
@@ -28,6 +37,9 @@ function Servicos() {
 
             )}
           </div>
+          </div>
+        </div>
+          
 
           <div className="produtos-lista">
             <ListaServico produtoAdicionado={produtoAdicionado}/>

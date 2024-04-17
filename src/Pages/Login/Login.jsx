@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import './Style.css';
 import InputCustomizado from "../../components/Input/index";
 import ButtonCustomizado from "../../components/Button/index";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/Provider";
+import imgLogin from "../../images/imgLogin.svg";
+import logoSalao from "../../images/iconSalao.png";
+
+
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -24,7 +27,7 @@ const Login = () => {
                 success = await login(credentials);
             } else {
                 // Para cadastrar, enviar apenas email e senha
-                const userData = { login: credentials.login, userName:credentials.userName, password: credentials.password};
+                const userData = { login: credentials.login, userName:credentials.userName, password: credentials.password,role:1};
                 success = await register(userData);
                 success = await login(credentials);
 
@@ -57,11 +60,34 @@ const Login = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container-login"> 
+        <div className="login-part">
             <form className="form" onSubmit={handleSubmit}>
-                <h1>{isLoginForm ? 'Faça o seu login' : 'Cadastre-se'}</h1>
+                <div className="logo-title">
+                <img className=" margin-0 logo-salao" src={logoSalao} alt="" />
+                <h1 className="title-salao">Cabelo <br/>& Art</h1>
+                </div>
+                {isLoginForm ?
+                <div className="container-title" >
+                <p className="title-login">Bem-vindo!</p>
+                <p className="subtitle-login">Faça seu login para continuar conectado.</p>
+                </div>
+             : 
+             <div className="container-title">
+             <p className="title-login">Crie uma conta</p>
+             <p className="subtitle-login">Cadastra-se para agendar seus horários em nosso salão.</p>
+
+             </div>
+}
+                <div className="container-inpbtn">
+
                 {isLoginForm ? (
                     <>
+                    
+                    <div className="container-input">
+
+                    <div className="input-div">
+                        <p className="subtitle-login">E-mail</p>
                         <InputCustomizado
                             name="login"
                             placeholder="Digite o seu email"
@@ -69,23 +95,28 @@ const Login = () => {
                             type="email"
                             required
                         />
-                        <InputCustomizado
-                            name="password"
-                            placeholder="Digite a sua senha"
-                            onChange={handleChange}
-                            type="password"
-                            required
-                        />
+                    </div>
+
+                        <div className="input-div">
+                        <p className="subtitle-login">Senha</p>
+                            <InputCustomizado
+                                name="password"
+                                placeholder="Digite a sua senha"
+                                onChange={handleChange}
+                                type="password"
+                                required
+                            />
+                        </div>      
+                        </div>
+
                     </>
                 ) : (
                     <>
-                        <InputCustomizado
-                            name="login"
-                            placeholder="Digite o seu email"
-                            onChange={handleChange}
-                            type="emai"
-                            required
-                        />
+                    <div className="container-input">
+
+                        <div className="input-div">
+                        <p className="subtitle-login">Nome</p>
+
                         <InputCustomizado
                             name="userName"
                             placeholder="Digite o seu nome de usuario"
@@ -93,6 +124,21 @@ const Login = () => {
                             type="emai"
                             required
                         />
+                        </div>
+                        <div className="input-div">
+                        <p className="subtitle-login">Email</p>
+
+                        <InputCustomizado
+                            name="login"
+                            placeholder="Digite o seu email"
+                            onChange={handleChange}
+                            type="emai"
+                            required
+                        />
+                        </div>
+                        <div className="input-div">
+                        <p className="subtitle-login">Senha</p>
+
                         <InputCustomizado
                             name="password"
                             placeholder="Digite a sua senha"
@@ -100,6 +146,8 @@ const Login = () => {
                             type="password"
                             required
                         />
+                        </div>
+                        </div>
                     </>
                 )}
                 {/* Condicionalmente renderizar o botão com base no estado */}
@@ -108,12 +156,31 @@ const Login = () => {
                     text={isLoginForm ? 'Entrar' : 'Cadastrar'}
                     disabled={loading} // Desabilitar o botão enquanto estiver carregando
                 />
+
                 <div>
-                    <p>{isLoginForm ? 'Não possui conta?' : 'Já possui uma conta?'}</p>
-                    {/* Alterar o texto do link com base no estado e adicionar evento onClick */}
-                    <a href="#" onClick={toggleForm}>{isLoginForm ? 'Cadastrar' : 'Fazer login'}</a>
+                {isLoginForm ?
+                <div className="container-troca">
+                    <p className="subtitle-login">Não possui uma conta?</p>
+                    <p className="subtitle-login color-red" onClick={toggleForm}>Cadastre-se</p>
                 </div>
+                    :
+                    <div className="container-troca">
+
+                    <p className="subtitle-login" >Já possui uma conta?</p>
+                    <p className="subtitle-login color-red" onClick={toggleForm}>Entrar</p>
+                </div>
+                }
+                </div>
+                </div>
+
             </form>
+        </div>
+
+        <div className="picture-part">
+            <div className="container-color">
+                <img className="img-login" src={imgLogin} alt="" />
+            </div>
+        </div>
         </div>
     );
 }

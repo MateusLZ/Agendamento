@@ -15,6 +15,10 @@ function Tabela({produtoAdicionado, exclusao , onDateSelect}) {
   const { userEmail,userId } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState({});
+  const [funcionariosServicoSelecionado, setFuncionariosServicoSelecionado] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
+
+  
 
 
   const token = localStorage.getItem("token");
@@ -82,22 +86,37 @@ const findProdutoByIndex = (index) => {
 const findHorarioById = (horarioId) => {
   return horarios.find((horario) => horario.id === horarioId);
 };
+const handleFuncionarioCheckboxChange = (id) => {
+  setFuncionarios(id);
+};
+
 
 const agendarHorario = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '');
   try {
+    console.log(userId)
+    console.log(servicoAgenda)
+    console.log(horaAgenda)
+    console.log(funcionarios)
+    console.log(dataSemBarras)
     const response = await axios.post(
       "http://localhost:8080/agendamentos/cadastrar",
       {
         usuario: {
           id: userId,
         },
-        produto: servicoAgenda,
-        horario: horaAgenda,
+        produto:{codigo:servicoAgenda.codigo},
+        
+        horario:horaAgenda
+        ,
+        funcionario: {
+          id: funcionarios, 
+        },
         dataAgendamento: dataSemBarras,
       },
       config
     );
+    
     handleCloseModal();
     fetchAgendamentosPorData();
   } catch (error) {
@@ -112,6 +131,7 @@ const handleClickHorario = async (produtoIndex, horarioId) => {
   setServClick(produto.nome);
   setHoraClick(formatarHorario(horario.dataHora));
   setServAgend(produto)
+  setFuncionariosServicoSelecionado(produto.usuarios);
   setHoraAgend(horarioObjeto)
   handleOpenModal();
 };
@@ -174,6 +194,17 @@ return (
               <img  src={Calendario} style={{ width: '18px' }}  />
               <p className="color-preto">{onDateSelect}</p>
             </div>
+          </div>
+          <div>
+          <div className="funcionarios-modal-table">
+            <p>Funcionários relacionados:</p>
+            {funcionariosServicoSelecionado.map((funcionario) => (
+              <div key={funcionario.id}>
+                <input type="checkbox" id={funcionario.id} name={funcionario.userName} checked={funcionario.selecionado} onChange={() => handleFuncionarioCheckboxChange(funcionario.id)} />
+                <label htmlFor={funcionario.id}>{funcionario.userName}</label>
+              </div>
+            ))}
+          </div>
           </div>
           <div className="button-modal-table">
             <p onClick={handleCloseModal} className="buttonPCancelar color-preto">Cancelar</p>

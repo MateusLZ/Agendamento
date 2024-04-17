@@ -13,8 +13,6 @@
   
   .modal-content {
     padding: 24px;
-    width: 392px; /* Largura do modal */
-    height: 344px;
     max-width: 600px; /* Largura máxima do modal */
     border-radius: 10px;
     border: 2px solid var(--White-Base-03, #F0F0F0);

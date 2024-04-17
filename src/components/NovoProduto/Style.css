@@ -1,3 +1,26 @@
-.botaocor{
-    background-color: yellow;
+
+.btn-cadastrar{
+    display: flex;
+    padding: 12px 24px 12px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--Primary-Vermelho-02, #C9615A);
+    background: var(--White-Base-05, #FFF);
+    color: var(--Primary-Vermelho-02, #C9615A);
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+
+}
+
+.btn-cadastrar:hover{
+    border: 1px solid var(--Primary-Vermelho-02, #C9615A);
+    background: var(--Primary-Vermelho-02, #C9615A);
+    color: var(--White-Base-05, #FFF);
 }

@@ -1,11 +1,14 @@
-import "./Style.css"
-import React, { useState } from "react";
-import Button from "../Botao/Botao"
+// Produto.js
+import React, { useState, useEffect } from "react";
+import Button from "../Botao/Botao";
 import Modal from "../Modal";
 import InputCustomizado from "../Input";
 import axios from "axios";
-import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
+import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu";
+import { FaPlus } from "react-icons/fa6";
+import "./Style.css"
 
 
 
@@ -13,8 +16,11 @@ const Produto = ({ onProdutoAdicionado }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nomeProduto, setNomeProduto] = useState("");
     const [marcaProduto, setMarcaProduto] = useState("");
-    const [imgURL, setImgURL] = useState('');
+    const [imgURL, setImgURL] = useState("");
     const [progress, setProgress] = useState(0);
+    const [funcionarios, setFuncionarios] = useState([]);
+    const [idsSelecionados, setFuncionariosSelect] = useState([]);
+
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -22,8 +28,8 @@ const Produto = ({ onProdutoAdicionado }) => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setNomeProduto("")
-        setMarcaProduto("")
+        setNomeProduto("");
+        setMarcaProduto("");
     };
 
     const handleImgChange = (e) => {
@@ -31,79 +37,143 @@ const Produto = ({ onProdutoAdicionado }) => {
             setImgURL(e.target.files[0]);
         }
     };
-   
 
     const handleCadastrarProduto = () => {
-
         if (!imgURL) {
             console.error("Selecione uma imagem antes de cadastrar o produto.");
             return;
         }
-        const storegaRef = ref(storage, `images/${imgURL.name}`)
-        const uploadTask = uploadBytesResumable(storegaRef, imgURL)
-
+    
+        const storegaRef = ref(storage, `images/${imgURL.name}`);
+        const uploadTask = uploadBytesResumable(storegaRef, imgURL);
+    
         uploadTask.on(
             "state_changed",
-            snapshot =>{
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes  ) * 100
-                setProgress(progress)
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setProgress(progress);
             },
-            error =>{
-                console.log(error)
-            }, 
-            () =>{
-                getDownloadURL(uploadTask.snapshot.ref).then(url =>{
-                    setImgURL(url)
-                })
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    setImgURL(url);
+                });
             }
-        )
-
+        );
+    
+        
+    
         const novoProduto = {
-            nome: nomeProduto,
-            descricao: marcaProduto,
-            nomeImagem: `images/${imgURL.name}`,
+            produto: {
+                nome: nomeProduto,
+                descricao: marcaProduto,
+                nomeImagem: `images/${imgURL.name}`,
+            },
+            userIds: idsSelecionados, // Aqui estão os IDs dos funcionários selecionados
         };
-
+    
         const token = localStorage.getItem("token");
-
-        // Se você estiver usando um token JWT, inclua-o no cabeçalho da solicitação
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         };
-        axios.post("http://localhost:8080/cadastrar", novoProduto, config)
-        .then(response => {
-            // Produto cadastrado com sucesso
-            console.log("Produto cadastrado com sucesso:", response.data);
-            // Feche o modal após cadastrar o produto
-            handleCloseModal();
-            onProdutoAdicionado();
-        })
-        .catch(error => {
-            // Ocorreu um erro ao cadastrar o produto
-            console.error("Erro ao cadastrar produto:", error);
-            handleCloseModal();
+    
+        axios
+            .post("http://localhost:8080/cadastrar", novoProduto, config)
+            .then((response) => {
+                console.log("Produto cadastrado com sucesso:", response.data);
+                handleCloseModal();
+                onProdutoAdicionado();
+            })
+            .catch((error) => {
+                console.error("Erro ao cadastrar produto:", error);
+                handleCloseModal();
+            });
+    };
+    
 
-        });
+    const handleFuncionarioCheckboxChange = (id) => {
+        console.log("ID do funcionário:", id);
+        setFuncionarios(
+            funcionarios.map((funcionario) =>
+                funcionario.id === id ? { ...funcionario, selecionado: !funcionario.selecionado } : funcionario
+            )
+        );
     };
 
+    useEffect(() => {
+        // Função para buscar os funcionários
+        const buscarFuncionarios = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                    },
+                };
 
-  
+                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", config);
+                // Inicializa os valores de 'selecionado' como 'false' para todos os funcionários
+                setFuncionarios(response.data.map((funcionario) => ({ ...funcionario, selecionado: false })));
+            } catch (error) {
+                console.error("Erro ao recuperar os dados dos funcionários:", error);
+            }
+        };
 
-    return (  
+        buscarFuncionarios();
+    }, []);
+
+    const handleFuncionariosSelecionadosChange = (values) => {
+        // Extrair apenas os IDs dos funcionários
+        const selectedIds = values.map(value => value.split(':')[1]);
+      
+        // Atualizar o estado dos funcionários selecionados com os IDs
+        setFuncionariosSelect(selectedIds);
+      
+        // Imprimir no console os IDs dos funcionários selecionados
+        console.log('IDs dos funcionários selecionados no Produto:', selectedIds);
+      };
+      
+
+    return (
         <div className="button-cadastrar">
-            <Button text='Cadastrar Serviços' onClick={handleOpenModal} />
+            <div className="btn-cadastrar">
+            <FaPlus/>
+            <p onClick={handleOpenModal} >Novo Serviço </p>
+            </div>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <InputCustomizado
+                <div className="title-modal-table">
+                    <h3>Novo Serviço</h3>
+                </div>
+                <div className="txt-modal-table">
+                    <p className="color-preto">Estamos quase lá!</p>
+                    <p className="color-cinza">Para cadastrar um novo serviço, preencha os campos abaixo e insira novas imagens.</p>
+                </div>
+
+
+                <div>
+                <p>Novo serviço</p>
+                <InputCustomizado
                     name="nomeProduto"
-                    placeholder="Nome do serviço" 
+                    placeholder="Nome do serviço"
                     color="black"
                     type="string"
                     required
                     value={nomeProduto}
-                    onChange={e => setNomeProduto(e.target.value)}
+                    onChange={(e) => setNomeProduto(e.target.value)}
                 />
+                </div>
+
+                <div>
+                    <p>Profissionais</p>
+                <MultipleOptionsSelectMenu funcionarios={funcionarios} onFuncionariosSelecionadosChange={handleFuncionariosSelecionadosChange} onChange={handleFuncionarioCheckboxChange} />
+                    </div>
+
+                <div>
+                    <p>Descrição</p>
                 <InputCustomizado
                     name="marcaProduto"
                     placeholder="Marca do serviço"
@@ -111,19 +181,22 @@ const Produto = ({ onProdutoAdicionado }) => {
                     type="string"
                     required
                     value={marcaProduto}
-                    onChange={e => setMarcaProduto(e.target.value)}
+                    onChange={(e) => setMarcaProduto(e.target.value)}
                 />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImgChange}
-                />
-              
-                 <Button text='Cadastrar' background='#c6c6c6' onClick={handleCadastrarProduto} />
+                </div>
 
+                    
+
+                <div>
+                    <input type="file" accept="image/*" onChange={handleImgChange} />
+                </div>
+                <div className="button-modal-table">
+            <p onClick={handleCloseModal} className="buttonPCancelar color-preto">Cancelar</p>
+            <p onClick={handleCadastrarProduto} className="buttonPVermelho color-vermelho">Cadastrar</p>
+          </div>
             </Modal>
         </div>
     );
-}
+};
 
 export default Produto;

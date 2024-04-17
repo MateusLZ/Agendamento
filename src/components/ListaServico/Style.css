@@ -1,5 +1,4 @@
 
-
 .lista-produtos h2{
     color: var(--Black-Cinza-03, #454545);
     font-family: "Montserrat";
@@ -10,28 +9,70 @@
 }
 .produtosUL{
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
+    gap: 14px;
+    padding: 26px;
 }
 .produtos{
-    width: calc(33.33% - 20px); /* Define a largura de cada produto para ocupar cerca de 1/3 do contêiner, com algum espaço entre eles */
-    height: 200px;
-    margin: 10px; /* Espaçamento entre os produtos */
-    background-color: white; /* Cor de fundo do produto */
-    border: 1px solid black; /* Borda ao redor do produto */
-    border-radius: 12px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    width: calc(32%); /* Define a largura de cada produto para ocupar cerca de 1/3 do contêiner, com algum espaço entre eles */
+    background-color:#FBFBFB; /* Cor de fundo do produto */
+    border-radius: 10px;
+    border: 1px solid #E8E7E7;
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+    flex-direction: column;
+    gap: 16px;
     position: relative;
-
     }
 
+.service-img{
+    height: 250px;
+    display: flex;
+    border-radius: 10px 10px 0px 0px;
+}
 
 .img-produtos{
-    height: 70px;
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.service-nomeDescr{
+    padding: 0px 20px 0px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.gap-5service{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.service-func{
+    padding: 0px 20px 20px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.funcionarios-service{
+    display: flex;
+    gap: 6px;
+}
+.nome-funcionario{
+    padding: 6px 8px;
+    border-radius: 100px;
+    border: 1px solid var(--Secondary-Roxo-03, #C7A3F5);
+    background: var(--Secondary-Roxo-05, #F1E8FD);
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 .btn-editar{
     color: black;
@@ -42,4 +83,31 @@
     position: absolute;
     left: 0px;
     top: 0px;
+}
+
+.title-service{
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.title-descricao{
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.descricao-service{
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }

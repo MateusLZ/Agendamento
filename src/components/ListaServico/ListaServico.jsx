@@ -110,19 +110,47 @@ const ListaServico = ({ produtoAdicionado }) => {
         }
    
 
+        
+
     return (  
         <div className="lista-produtos">
-            <h2>Nossos serviços</h2>
+           <div className="container-service">
             <ul className="produtosUL">
                 {produtos.map(produto => (
                     <li className="produtos" key={produto.codigo}>
-                        <strong></strong> {produto.nome} <br />
-                        <strong> </strong> {produto.descricao} <br />
-                        <strong> </strong>   <img className="img-produtos" src={imgURLs[produto.codigo]} alt="Imagem do Produto" height={300} /> <br />
-                        {userIsAdmin === true && <p className="btn-editar" onClick={() => handleOpenEditModal(produto)}>Editar</p>} {/* Renderiza o botão "Editar" apenas se o usuário for um administrador */}
+
+                        <div className="service-img">
+                         <img className="img-produtos" src={imgURLs[produto.codigo]} alt="Imagem do Produto" />
+                        </div>
+
+                        <div className="service-nomeDescr">
+                            <div>
+                                <p className="title-service">{produto.nome}</p>
+                            </div>
+
+                            <div className="gap-5service">
+                                <p className="title-descricao">Descrição</p>
+                                <p className="descricao-service">{produto.descricao}</p>
+                            </div>
+                        </div>
+
+                        <div className="service-func">
+                            <p className="title-descricao">Profissionais desse serviço</p>
+                            <ul className="funcionarios-service">
+                            {produto.usuarios.map(funcionario => (
+                                <li className="nome-funcionario" key={funcionario.id}>
+                                    {funcionario.userName}
+                                </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                       
+                        {/* {userIsAdmin === true && <p className="btn-editar" onClick={() => handleOpenEditModal(produto)}>Editar</p>}  */}
                     </li>
                 ))}
             </ul>
+            </div> 
 
             <Modal isOpen={isModalOpen} onClose={handleCloseEditModal}>
             <InputCustomizado

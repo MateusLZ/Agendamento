@@ -9,9 +9,9 @@ const UserProvider = ({ children }) => {
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [userName, setUserName] = useState(""); 
   const [userEmail, setEmailUser] = useState("");
+  const [userRole, setRoleUser] = useState("");
   const [userId, setUserId] = useState(""); 
   const [userDataLoaded, setUserDataLoaded] = useState(false); 
-
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -39,7 +39,7 @@ const UserProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    try {
+     try {
       const response = await axios.post("http://localhost:8080/auth/registrar", userData);
       if (response.status === 200) {
         return true;
@@ -60,12 +60,13 @@ const UserProvider = ({ children }) => {
           },
         });
 
-        const {userId, userName, name, isAdmin } = response.data; 
+        const {userId, userName, name, isAdmin,   } = response.data; 
         setUserId(userId);
         setEmailUser(name);
         setUserName(userName);
         setUserIsAdmin(isAdmin);
-        setUserDataLoaded(true); // Definir que os dados do usuário foram carregados com sucesso
+        setUserDataLoaded(response.data); 
+        setRoleUser(response.data.Role)
       } catch (error) {
         console.error("Erro ao recuperar dados do usuário:", error);
         setUserDataLoaded(false); // Definir que os dados do usuário não foram carregados devido a um erro
@@ -81,6 +82,7 @@ const UserProvider = ({ children }) => {
   const contextValue = {
     token,
     setToken,
+    userRole,
     userIsAdmin,
     userEmail,
     userId,
