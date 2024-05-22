@@ -1,0 +1,92 @@
+.tabela-funcionarios{
+    border-radius: 10px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-05, #FFF);
+    display: flex;
+    flex-direction: column;
+}
+
+.header-func-tabela{
+    width: 100%;
+   
+}
+.header-func-tabela ul{
+    display: flex;
+    border-bottom: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+    border-radius: 10px 10px 0px 0px;
+    padding: 12px 22px;
+    color: var(--Black-Cinza-04, #747474);
+    /* Corpo/B3 Body Medium */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    flex-grow: 1;
+    justify-content: center;
+}
+.header-func-tabela ul li{
+    width: calc(100%/4);
+    display: flex;
+    justify-content:center;
+}
+
+.lista-funcionarios{
+    display: flex;
+    flex-direction: column;
+    padding: 12px 22px;
+    gap: 30px;
+    
+}
+
+.lista-funcionarios li{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    color: var(--Black-Cinza-03, #454545);
+    text-overflow: ellipsis;
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.lista-funcionarios li div{
+    display: flex;
+    justify-content:center;
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+}
+.stats-func{
+    margin-right: 10px;
+}
+.inative{
+    color: var(--Black-Cinza-05, #BCBCBC);
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    position: absolute;
+    bottom: 30px;
+    right: 45%;
+}
+.tipo-paginacao{
+    color: var(--Black-Cinza-03, #313131);
+
+font-family: "Montserrat";
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

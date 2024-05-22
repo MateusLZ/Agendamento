@@ -1,14 +1,18 @@
 import { initializeApp } from "firebase/app";
-import {getStorage} from "firebase/storage"
+import {getStorage} from 'firebase/storage'
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD_c62R0yXyhMOGJwEmGAbNmjU2jy48va0",
-  authDomain: "uploadssenai.firebaseapp.com",
-  projectId: "uploadssenai",
-  storageBucket: "uploadssenai.appspot.com",
-  messagingSenderId: "245367261648",
-  appId: "1:245367261648:web:7d8f7066697fe9ec4ed1d5"
+  apiKey: "AIzaSyDVIU1Yzja1QA6uyAm9s7m0jsU3ldxUgiE",
+  authDomain: "reactupload-bbaac.firebaseapp.com",
+  projectId: "reactupload-bbaac",
+  storageBucket: "reactupload-bbaac.appspot.com",
+  messagingSenderId: "715169481138",
+  appId: "1:715169481138:web:735ecc3090e6b8bbe164ab",
+  measurementId: "G-ZEFV25KYB2"
 };
 
+// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const  storage =getStorage(app)
+export const  storage = getStorage(app)
+

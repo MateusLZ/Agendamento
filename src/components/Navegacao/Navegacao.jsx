@@ -4,16 +4,24 @@ import { UserContext } from "../../Context/Provider";
 import React, { useContext, useEffect, useState } from "react";
 import logoSalao from "../../images/iconSalao.png";
 import { useNavigate } from "react-router-dom";
+import { FaChevronDown,FaChevronUp  } from "react-icons/fa6";
 
 import "./Style.css";
 
 function Navegacao() {
     const { userName, userIsAdmin, logout, userRole } = useContext(UserContext);
     const [nomeRole, setNomeRole] = useState("");
+    const [mostrarParagrafo, setMostrarParagrafo] = useState(false);
     const navigate = useNavigate();
+
+    const toggleParagrafo = () => {
+        setMostrarParagrafo(!mostrarParagrafo);
+    };
+
 
     useEffect(() => {
         fetchNameRole();
+        
     }, [userRole]);
 
     const fetchNameRole = () => {
@@ -64,10 +72,12 @@ function Navegacao() {
             <nav className="navegacao">
                 <ul className="header-menu">
                     <Botao text='Início' icon={"home"} onClick={handleNavigateToHome} />
-                    <Botao text='Agendamentos' icon={"calendar"} onClick={handleNavigateToAgendamentos} />
-                    <Botao text='Perfil' icon={'user'} onClick={handleNavigateToPerfil} />
+                    { (userRole === "FUNCIONARIO" || userIsAdmin) && (
+    <Botao text='Agendamentos' icon={"calendar"} onClick={handleNavigateToAgendamentos} />
+)}
                     <Botao text='Serviços' icon={'briefcase'} onClick={handleNavigateToServicos} />
                     {userIsAdmin && <Botao text='Funcionários' icon={'users'} onClick={handleNavigateToFuncionarios} />}
+<Botao text='Configurações' icon={'config'} onClick={handleNavigateToPerfil} />
                 </ul>
             </nav>
             <div className="user-info">
@@ -79,6 +89,19 @@ function Navegacao() {
                         <p>{userName}</p>
                         <p>{nomeRole}</p>
                     </div>
+                    <div className="chevron-sair">
+                        {mostrarParagrafo ? (
+                            <FaChevronUp className="cursor-pointer" onClick={toggleParagrafo} />
+                        ) : (
+                            <FaChevronDown className="cursor-pointer" onClick={toggleParagrafo} />
+                        )}
+                        {mostrarParagrafo && (
+                            <p className="logout-app cursor-pointer" onClick={handleLogout}>
+                                Sair da conta
+                            </p>
+                        )}
+                    </div>
+
                 </div>
             </div>
         </div>

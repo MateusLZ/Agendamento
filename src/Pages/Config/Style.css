@@ -1,0 +1,55 @@
+.container-home-config{
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.telaPrincipal-config{
+    min-height: 100vh;
+    width: 80%;
+}
+
+.header-config{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    padding: 0px 36px;
+}
+
+.page-config{ 
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0px 36px;
+
+}
+
+.navigation-config ul{
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    border-bottom: 1px solid var(--White-Base-03, #F0F0F0);
+}
+
+.btn-navigation-config{
+    display: flex;
+    padding: 12px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.select-btn{
+    border-bottom: 1.5px solid var(--Primary-Vermelho-02, #C9615A);
+}

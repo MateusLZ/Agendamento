@@ -18,6 +18,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     const [nomeProduto, setNomeProduto] = useState("");
     const [descricaoProduto, setDescricaoProduto] = useState("");
     const [idProduto, setIdProduto] = useState("");
+    const [userIds, setUserIds] = useState([]);
     const [imgURL, setImgURL] = useState('');
     const token = localStorage.getItem("token");
 
@@ -32,10 +33,10 @@ const ListaServico = ({ produtoAdicionado }) => {
         setNomeProduto(produto.nome)
         setDescricaoProduto(produto.descricao)
         setIdProduto(produto.codigo);
+        setUserIds(produto.usuarios.map(usuario => usuario.id));
         setIsModalOpen(true);
-
     };
-    
+
     const handleCloseEditModal = () => {
         setNomeProduto("")
         setDescricaoProduto("")
@@ -96,6 +97,25 @@ const ListaServico = ({ produtoAdicionado }) => {
             });
     };
 
+    const handleExcluirProdutoDoUsuario = () => {
+        axios.delete(`http://localhost:8080/remover/${idProduto}/usuarios`, {
+            data: userIds,
+            headers: {
+                ...config.headers,
+                'Content-Type': 'application/json' // Informa que o conteúdo da solicitação é JSON
+            }
+        })
+        .then(response => {
+            console.log("Relacionamentos entre produto e usuários removidos com sucesso:", response.data);
+            // Em seguida, chame a função para excluir o produto
+            handleExcluirProduto();
+        })
+        .catch(error => {
+            console.error("Erro ao remover relacionamentos entre produto e usuários:", error);
+        });
+    };
+    
+
         const handleExcluirProduto = () => {
             axios.delete(`http://localhost:8080/remover/${idProduto}`, config)
             .then(response => {
@@ -146,7 +166,7 @@ const ListaServico = ({ produtoAdicionado }) => {
                         </div>
 
                        
-                        {/* {userIsAdmin === true && <p className="btn-editar" onClick={() => handleOpenEditModal(produto)}>Editar</p>}  */}
+                        {userIsAdmin === true && <p className="btn-editar" onClick={() => handleOpenEditModal(produto)}>Editar</p>} 
                     </li>
                 ))}
             </ul>
@@ -178,7 +198,7 @@ const ListaServico = ({ produtoAdicionado }) => {
                 /> */}
               
                  <Button text='Editar' background='#c6c6c6'  onClick={handleEditProduto}  />
-                 <Button text='Excluir' background='#c6c6c6'  onClick={handleExcluirProduto}  />
+                 <Button text='Excluir' background='#c6c6c6'  onClick={handleExcluirProdutoDoUsuario}  />
 
             </Modal>
 

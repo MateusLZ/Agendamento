@@ -9,7 +9,7 @@ import Login from './Pages/Login/Login';
 import Home from './Pages/Home/Home';
 import Agenda from './Pages/Agenda/Agenda';
 import Funcionarios from "./Pages/Funcionarios/Funcionarios";
-import Profile from "./Pages/Profile/Profile";
+import Profile from "./Pages/Config/Config";
 import Servicos from "./Pages/Servicos/Servicos";
 import LoadingScreen from "./components/Loading/LoadingScreen .jsx";
 import ErrorPage from "./error-page";

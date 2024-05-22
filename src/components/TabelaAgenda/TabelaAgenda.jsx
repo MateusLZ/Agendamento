@@ -14,14 +14,13 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
   const [servicoClick, setServClick] = useState([]);
   const [servicoAgenda, setServAgend] = useState([]);
   const [cliente, setCliente] = useState([]);
+  const [profissional, setProf] = useState([]);
   const [phoneCliente, setPhone] = useState([]);
   const [horaAgenda, setHoraAgend] = useState([]);
   const { userEmail,userId,userIsAdmin } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState({});
   const [agendamentosPorData, setAgendamentosPorData] = useState([]);
-
-
 
   const token = localStorage.getItem("token");
   const config = {
@@ -35,8 +34,15 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
   const fetchProdutos = async () => {
     try {
         const response = await axios.get("http://localhost:8080/listar", config);
-        const responseHorario = await axios.get("http://localhost:8080/horarios/listar", config);
-        setProdutos(response.data); // Define os produtos retornados pela API no estado
+        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config);
+
+        
+        if (userIsAdmin) {
+          setProdutos(response.data); // Define os produtos retornados pela API no estado
+      } else {
+        const produtosFiltrados = response.data.filter(produto => produto.usuarios.some(user => user.id === userId));
+        setProdutos(produtosFiltrados);
+      }
         setHorarios(responseHorario.data)
     } catch (error) {
         console.error("Erro ao buscar produtos:", error);
@@ -48,11 +54,21 @@ const fetchAgendamentosPorData = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config);
 
-    setAgendamentosPorData(response.data);
+    let agendamentosFiltrados = [];
+    if (userIsAdmin) {
+      agendamentosFiltrados = response.data;
+    } else {
+      agendamentosFiltrados = response.data.filter(agendamento => agendamento.funcionario.id === userId);
+    }
+    setAgendamentosPorData(agendamentosFiltrados);
+
     const produtosCodigos = produtos.map(produto => produto.codigo);
 
     produtosCodigos.forEach(async (produtoCodigo) => {
-      const agendamentosProdutoSelecionado = response.data
+      // Variável local para armazenar o valor atual de agendamentosPorData
+      const agendamentosAtuais = agendamentosFiltrados;
+
+      const agendamentosProdutoSelecionado = agendamentosAtuais
         .filter(agendamento => agendamento.produto.codigo === produtoCodigo);
 
       // Filtrar apenas os horários ocupados para o produto específico
@@ -70,6 +86,7 @@ const fetchAgendamentosPorData = async () => {
   }
 };
 
+
 useEffect(() => {
   fetchProdutos();
 }, [produtoAdicionado]);
@@ -77,6 +94,7 @@ useEffect(() => {
 useEffect(() => {
   fetchAgendamentosPorData();
 }, [onDateSelect, produtos,exclusao]);
+
 
 const formatarHorario = (dataHora) => {
   return dataHora.substring(0, 5); // Extrai os primeiros 5 caracteres (HH:mm)
@@ -92,7 +110,7 @@ const findHorarioById = (horarioId) => {
 
 
 
-const handleClickHorario = async (produtoIndex, horarioId) => {
+const handleClickHorario = async (produtoIndex, horarioId) => {   
     const produto = findProdutoByIndex(produtoIndex);
     const horario = findHorarioById(horarioId);
     const horarioObjeto = horarios.find((horario) => horario.id === horarioId);
@@ -101,7 +119,6 @@ const handleClickHorario = async (produtoIndex, horarioId) => {
     setServAgend(produto);
     setHoraAgend(horarioObjeto);
     
-  
     // Busca pelo agendamento correspondente dentro do estado agendamentosPorData
     const agendamento = agendamentosPorData.find(
       (agendamento) =>
@@ -114,8 +131,7 @@ const handleClickHorario = async (produtoIndex, horarioId) => {
         handleOpenModal()
         setCliente(agendamento.usuario.userName)
         setPhone(agendamento.usuario.userName)
-      console.log("Nome do Usuário:", agendamento.usuario.userName);
-      console.log("ID do Usuário:", agendamento.usuario.id);
+        setProf(agendamento.funcionario.userName)
     } else {
       console.log("Nenhum agendamento encontrado para este horário.");
     }
@@ -133,9 +149,9 @@ const handleClickHorario = async (produtoIndex, horarioId) => {
 
 return (
     <div className="table-container">
-      <div className="table-horarios">
-        <div className="nome-servicos">
-          <div className="celulas-add">
+      <div className="table-horarios-agenda">
+        <div className="nome-servicos-agenda">
+          <div className="header-cell">
             <p>Horário</p>
           </div>
           {produtos.map((produto, index) => (
@@ -150,10 +166,14 @@ return (
             {horarios.map((horario) => (
                 
               <div className="horario-celula" key={horario.id}>
-                <div className="horas celula-livre">
-                <p>{formatarHorario(horario.dataHora)}</p>
-                </div>
+                
                 <ul className="agendamento-celula">
+
+                <li className="celula-livre">
+                  <p>
+                  {formatarHorario(horario.dataHora)}
+                  </p>
+                  </li>
                 {produtos.map((produto, index) => (
                 <li
                     key={produto.codigo}
@@ -163,7 +183,7 @@ return (
                     {horariosOcupados[produto.codigo]?.includes(horario.id) ? (
                     <p>Agendado</p>
                     ) : (
-                    <p>Livre</p>
+                    <p></p>
                     )}
                 </li>
                 ))}
@@ -191,7 +211,7 @@ return (
             </div>
             <p className="color-preto">Profissional:</p>
             <div className="serv-hora">
-              <p className="color-preto buttonPCinza">Claudia</p>
+              <p className="color-preto buttonPCinza">{profissional}</p>
             </div>
             <div className="flex-gap-12">
               <img  src={Calendario} style={{ width: '18px' }}  />

@@ -21,7 +21,7 @@ function Servicos() {
       <div className="div-container">
 
       </div>
-        <Navegacao/>
+        <Navegacao/> 
 
       <div className="telaPrincipal-service">
 
@@ -36,7 +36,7 @@ function Servicos() {
               <Produto onProdutoAdicionado={handleProdutoAdicionado}/>
 
             )}
-          </div>
+          </div> 
           </div>
         </div>
           

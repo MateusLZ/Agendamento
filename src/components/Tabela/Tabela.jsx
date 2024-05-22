@@ -12,13 +12,18 @@ function Tabela({produtoAdicionado, exclusao , onDateSelect}) {
   const [servicoClick, setServClick] = useState([]);
   const [servicoAgenda, setServAgend] = useState([]);
   const [horaAgenda, setHoraAgend] = useState([]);
+  const [agendamentos, setAgendamento] = useState([]);
   const { userEmail,userId } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState({});
   const [funcionariosServicoSelecionado, setFuncionariosServicoSelecionado] = useState([]);
+  const [nomeFuncionario, setNomeFuncionario] = useState(null);
   const [funcionarios, setFuncionarios] = useState([]);
+  const [mostrarFuncionarios, setMostrarFuncionarios] = useState(false);
 
-  
+  const toggleMostrarFuncionarios = () => {
+    setMostrarFuncionarios(!mostrarFuncionarios);
+  };
 
 
   const token = localStorage.getItem("token");
@@ -33,8 +38,8 @@ function Tabela({produtoAdicionado, exclusao , onDateSelect}) {
   const fetchProdutos = async () => {
     try {
         const response = await axios.get("http://localhost:8080/listar", config);
-        const responseHorario = await axios.get("http://localhost:8080/horarios/listar", config);
-        setProdutos(response.data); // Define os produtos retornados pela API no estado
+        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config);
+        setProdutos(response.data); 
         setHorarios(responseHorario.data)
     } catch (error) {
         console.error("Erro ao buscar produtos:", error);
@@ -46,26 +51,40 @@ const fetchAgendamentosPorData = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config);
 
+    setAgendamento(response.data)
     const produtosCodigos = produtos.map(produto => produto.codigo);
+
+    const horariosOcupadosTemp = {}; // Criar um objeto temporário para armazenar os horários ocupados
 
     produtosCodigos.forEach(async (produtoCodigo) => {
       const agendamentosProdutoSelecionado = response.data
         .filter(agendamento => agendamento.produto.codigo === produtoCodigo);
 
-      // Filtrar apenas os horários ocupados para o produto específico
-      const horariosOcupadosProduto = agendamentosProdutoSelecionado
-        .map(agendamento => agendamento.horario.id);
+      const produto = produtos.find(produto => produto.codigo === produtoCodigo);
 
-      // Atualizar os horários ocupados apenas para o produto específico
-      setHorariosOcupados(prevState => ({
-        ...prevState,
-        [produtoCodigo]: horariosOcupadosProduto,
-      }));
+      // Verificar se todos os funcionários associados ao produto estão ocupados
+      if (agendamentosProdutoSelecionado.length >= produto.usuarios.length) {
+        const horariosOcupados = agendamentosProdutoSelecionado.map(agendamento => agendamento.horario.id);
+
+        // Filtrar os horários ocupados que correspondem ao número exato de funcionários associados ao produto
+        const horariosOcupadosFiltrados = horariosOcupados.filter((horarioId) => {
+          const numFuncionarios = produto.usuarios.length;
+          const numOcorrencias = horariosOcupados.filter(id => id === horarioId).length;
+          return numOcorrencias === numFuncionarios;
+        });
+        // Atualizar os horários ocupados apenas para o produto específico no objeto temporário
+        horariosOcupadosTemp[produtoCodigo] = horariosOcupadosFiltrados;
+      } else {
+      }
     });
+
+    // Atualizar o estado horariosOcupados com base no objeto temporário
+    setHorariosOcupados(horariosOcupadosTemp);
   } catch (error) {
     console.error("Erro ao buscar agendamentos:", error);
   }
 };
+
 
 useEffect(() => {
   fetchProdutos();
@@ -86,19 +105,25 @@ const findProdutoByIndex = (index) => {
 const findHorarioById = (horarioId) => {
   return horarios.find((horario) => horario.id === horarioId);
 };
-const handleFuncionarioCheckboxChange = (id) => {
-  setFuncionarios(id);
+
+
+const handleFuncionarioSelect = (funcionarioId) => {
+  const funcionarioSelecionado = funcionariosServicoSelecionado.find((funcionario) => funcionario.id === funcionarioId);
+  if (!funcionarioSelecionado) {
+    setNomeFuncionario(null); // Limpa o nome do funcionário selecionado
+    setFuncionarios(null); // Limpa o ID do funcionário selecionado
+  } else {
+    setNomeFuncionario(funcionarioSelecionado.userName); // Define o nome do funcionário selecionado
+    setFuncionarios(funcionarioId); // Define o ID do funcionário selecionado
+  }
 };
+
+
 
 
 const agendarHorario = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '');
   try {
-    console.log(userId)
-    console.log(servicoAgenda)
-    console.log(horaAgenda)
-    console.log(funcionarios)
-    console.log(dataSemBarras)
     const response = await axios.post(
       "http://localhost:8080/agendamentos/cadastrar",
       {
@@ -128,10 +153,20 @@ const handleClickHorario = async (produtoIndex, horarioId) => {
   const produto = findProdutoByIndex(produtoIndex);
   const horario = findHorarioById(horarioId);
   const horarioObjeto = horarios.find((horario) => horario.id === horarioId);
+  const codigoProduto = produto.codigo;
+
+const agendamentosFiltrados = agendamentos.filter(agendamento => (
+  agendamento.produto.codigo === codigoProduto &&
+  agendamento.horario.id === horarioId
+));
+
+const idsFuncionarios = agendamentosFiltrados.map(agendamento => agendamento.funcionario.id);
+const novoFuncionariosServicoSelecionado = produto.usuarios.filter(funcionario => !idsFuncionarios.includes(funcionario.id));
+
+  setFuncionariosServicoSelecionado(novoFuncionariosServicoSelecionado);
   setServClick(produto.nome);
   setHoraClick(formatarHorario(horario.dataHora));
   setServAgend(produto)
-  setFuncionariosServicoSelecionado(produto.usuarios);
   setHoraAgend(horarioObjeto)
   handleOpenModal();
 };
@@ -142,79 +177,87 @@ const handleOpenModal = () => {
 
 const handleCloseModal = () => {
   setIsModalOpen(false);
+  setNomeFuncionario(null);
 };
+
 
 
 
 
 return (
   <div className="table-container">
-    <div className="table-horarios">
-      <div className="nome-servicos">
-        {produtos.map((produto, index) => (
-          <div className="header-cell" key={index}>
-            <p>{produto.nome}</p>
-          </div>
-        ))}
-      </div>
-      <div className="horarios">
-        {produtos.map((produto, index) => (
-          <div className="horario-row" key={index}>
-            {horarios.map((horario) => (
-              <div className="horario-cell" key={horario.id}>
-                <p
-          onClick={() => handleClickHorario(index, horario.id)}
-          className={horariosOcupados[produto.codigo]?.includes(horario.id) ? "horario-cell horario-ocupado" : "horario-cell"}
-        >
-          {formatarHorario(horario.dataHora)}
-        </p>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-    <div className="modal-table">
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <div className="modal-table-conteudo">
-          <div className="title-modal-table">
-            <h3>Agendar Horario</h3>
-          </div>
-          <div className="txt-modal-table">
-            <p className="color-preto">Estamos quase lá!</p>
-            <p className="color-cinza">Confirme o agendamento para garantir seu horário em nosso salão.</p>
-          </div>
-          <div className="info-modal-table">
-            <p className="color-preto">Você escolheu o seguinte serviço:</p>
-            <div className="serv-hora">
-              <p className="color-preto buttonPCinza">{servicoClick}</p>
-              <p className="color-preto buttonPVerd">{horaClick}</p>
-            </div>
-            <div className="flex-gap-12">
-              <img  src={Calendario} style={{ width: '18px' }}  />
-              <p className="color-preto">{onDateSelect}</p>
-            </div>
-          </div>
-          <div>
-          <div className="funcionarios-modal-table">
-            <p>Funcionários relacionados:</p>
-            {funcionariosServicoSelecionado.map((funcionario) => (
-              <div key={funcionario.id}>
-                <input type="checkbox" id={funcionario.id} name={funcionario.userName} checked={funcionario.selecionado} onChange={() => handleFuncionarioCheckboxChange(funcionario.id)} />
-                <label htmlFor={funcionario.id}>{funcionario.userName}</label>
-              </div>
-            ))}
-          </div>
-          </div>
-          <div className="button-modal-table">
-            <p onClick={handleCloseModal} className="buttonPCancelar color-preto">Cancelar</p>
-            <p onClick={agendarHorario} className="buttonPVermelho color-vermelho">Confirmar</p>
-          </div>
+  <div className="table-horarios">
+    <div className="nome-servicos">
+      {produtos.map((produto, index) => (
+        <div className="header-cell" key={index}>
+          <p>{produto.nome}</p>
         </div>
-      </Modal>
+      ))}
+    </div>
+    <div className="horarios">
+      {produtos.map((produto, index) => (
+        <div className="horario-row" key={index}>
+          {horarios.map((horario) => (
+            <div className="horario-cell" key={horario.id}>
+              <p
+                onClick={() => handleClickHorario(index, horario.id)}
+                className={horariosOcupados[produto.codigo]?.includes(horario.id) ? "horario-cell horario-ocupado" : "horario-cell"}
+              >
+                {formatarHorario(horario.dataHora)}
+              </p>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   </div>
+  <div className="modal-table">
+    <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      <div className="modal-table-conteudo">
+        <div className="title-modal-table">
+          <h3>Agendar Horario</h3>
+        </div>
+        <div className="txt-modal-table">
+          <p className="color-preto">Estamos quase lá!</p>
+          <p className="color-cinza">Confirme o agendamento para garantir seu horário em nosso salão.</p>
+        </div>
+        <div className="info-modal-table">
+          <p className="color-preto">Você escolheu o seguinte serviço:</p>
+          <div className="serv-hora">
+            <p className="color-preto buttonPCinza">{servicoClick}</p>
+            <p className="color-preto buttonPVerd">{horaClick}</p>
+          </div>
+          <div className="flex-gap-12">
+            <img src={Calendario} style={{ width: '18px' }} alt="Calendário" />
+            <p className="color-preto">{onDateSelect}</p>
+          </div>
+        </div>
+        <div>
+        <p>Profisional</p>
+
+        <div className="funcionarios-modal-table" onClick={toggleMostrarFuncionarios}>
+  <p>{nomeFuncionario ? nomeFuncionario : "Selecionar"}</p>
+  {mostrarFuncionarios && (
+    <div className="funcionarios-container">
+      {funcionariosServicoSelecionado.map((funcionario) => (
+        <div className="select-func" key={funcionario.id} onClick={() => handleFuncionarioSelect(funcionario.id)}>
+          <p>{funcionario.userName}</p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+        </div>
+        <div className="button-modal-table">
+          <p onClick={handleCloseModal} className="buttonPCancelar color-preto">Cancelar</p>
+          <p onClick={agendarHorario} className="buttonPVermelho color-vermelho">Confirmar</p>
+        </div>
+      </div>
+    </Modal>
+  </div>
+</div>
 );
 }
+
 
 export default Tabela;

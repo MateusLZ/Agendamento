@@ -1,0 +1,127 @@
+.container-filtre{
+    display: flex;
+    width: 284px;
+    padding: 16px 0px 0px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    max-height: 80vh;
+    position: relative;
+}
+.filtro-div{
+    display: flex;
+    height: 41px;
+    padding: 12px 12px 12px 16px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-05, #FFF);
+    cursor: pointer;
+}
+.filtro-flex{
+    display: flex;
+    gap: 6px;
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    align-items: center;
+}
+.produtos-container{
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    width: 100%;
+    padding: 12px 12px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 8px;
+    position: absolute; /* Defina o posicionamento absoluto */
+    top: 60px; /* Ajuste conforme necessário para a posição vertical */
+    left: 0; /* Ajuste conforme necessário para a posição horizontal */
+    z-index: 999; 
+    background-color: #FFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.produtos-container div p{
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.5s ease;
+
+}
+.produtos-container div p:hover{
+    background-color: #E8E7E7;
+}
+.lista-agendamentos{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Adicione rolagem vertical quando necessário */
+    width: 100%;
+    min-height: 400px;
+}
+.mensagem-agenda{
+    gap: 30px;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    align-items: center; 
+}
+.oi{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.agendamento-item ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    border-bottom:  1px solid #F0F0F0;;
+}
+.gap-7{
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+}
+.display-flex{
+    display: flex;
+    gap: 6px;
+}
+.padding-cliente-profi{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+}
+
+.tipografia-leve{
+    color: var(--Black-Cinza-03, #454545);
+font-family: "Montserrat";
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.cor-leve{
+    color: var(--Black-Cinza-04, #747474);
+}
+.tipografia-title{
+    color: var(--Black-Cinza-03, #454545);
+font-family: "Montserrat";
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.size-14{
+font-size: 14px;
+}

@@ -9,6 +9,14 @@
 
 .telaPrincipal{
     height: 100vh;
-    width: 80%;
+    width: 82%;
+    display: flex;
+    flex-direction: column;
 
+}
+.header-func{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -1,0 +1,45 @@
+.Config-minhaConta-horarios{
+    display: flex;
+    gap: 4px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #F0F0F0;
+    justify-content: space-between;
+}
+
+.config-minhaContaHorario{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+.tabela-horarios{
+    border-radius: 10px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-05, #FFF);
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.header-func-tabela-horarios ul{
+    display: flex;
+    border-bottom: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-04, #FBFBFB);
+    border-radius: 10px 10px 0px 0px;
+    padding: 12px 22px;
+    color: var(--Black-Cinza-04, #747474);
+    /* Corpo/B3 Body Medium */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.header-func-tabela-horarios ul li{
+    width: calc(100%/2);
+    display: flex;
+    justify-content:center;
+}

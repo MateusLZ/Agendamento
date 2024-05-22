@@ -18,24 +18,19 @@ const MenuProps = {
   },
 };
 
-
-
-
-
-export default function MultipleOptionsSelectMenu({ funcionarios,onFuncionariosSelecionadosChange  }) {
+export default function MultipleOptionsSelectMenu({ items,onItemsSelecionadosChange,labelKey  }) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [selectedItems, setSelectedItems] = React.useState([]);
 
   const handleChange = (event) => {
-    console.log(event)
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setSelectedItems(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
-    onFuncionariosSelecionadosChange(value);
+    onItemsSelecionadosChange(value);
   };
 
   return (
@@ -46,7 +41,7 @@ export default function MultipleOptionsSelectMenu({ funcionarios,onFuncionariosS
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
+          value={selectedItems}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
@@ -58,13 +53,13 @@ export default function MultipleOptionsSelectMenu({ funcionarios,onFuncionariosS
           )}
           MenuProps={MenuProps}
         >
-          {funcionarios.map((funcionario) => (
+          {items.map((item) => (
             <MenuItem
-              key={funcionario.id}
-              value={`${funcionario.userName}:${funcionario.id}`}
-              style={getStyles(funcionario.userName, personName, theme)}
+              key={item.id}
+              value={`${item[labelKey]}:${item.id}`}
+                style={getStyles(item[labelKey], selectedItems, theme)}
             >
-              {funcionario.userName} 
+               {item[labelKey]}
             </MenuItem>
           ))}
         </Select>

@@ -1,0 +1,47 @@
+.container-config{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.Config-minhaConta{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.tipo-config-title{
+    color: var(--Black-Cinza-03, #313131);
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.tipo-subtitle-config{
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.config-minhaContaInp{
+    display: flex;
+    gap: 30px;
+}
+.config-minhaContaInp ul{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.config-minhaContaInp ul li{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+

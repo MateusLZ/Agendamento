@@ -28,9 +28,16 @@ function Funcionarios() {
         <Navegacao/>
 
       <div className="telaPrincipal">
+        <div className="header-func">
         <div>
-        <p>Funcionarios</p>
-        <CadastrarFuncionario atualizarListaFuncionarios={atualizarListaFuncionarios} />
+            <p className="title-header">Funcionários</p>
+          </div>
+          <div className="icons">
+
+          <div className="cadastro-produto">
+              <CadastrarFuncionario atualizarListaFuncionarios={atualizarListaFuncionarios} />
+          </div>
+          </div>
         </div>
 
         <div>

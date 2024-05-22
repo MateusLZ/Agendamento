@@ -4,6 +4,7 @@ import Calendario from "../../images/calender.svg"
 import Maleta from "../../images/maleta.svg"
 import Perfil from "../../images/perfil.svg"
 import addUser from "../../images/addUser.svg"
+import config from "../../images/config.svg"
 
 import "./style.css"
 
@@ -27,6 +28,8 @@ const Botao = ({
                 return  <img  src={Maleta} style={{ width: '22px' }}  />
             case 'users':
                 return <img  src={addUser} style={{ width: '23px' }}  />
+            case 'config':
+                return <img  src={config} style={{ width: '23px' }}  />
             case 'exit':
                 return <ImExit size={22}  />;
             default:

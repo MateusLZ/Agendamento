@@ -12,41 +12,58 @@
     width: 80%;
     display: flex;
     flex-direction: column;
+
 }
 
 
+
 .data_formatada{
-    color: var(--Black-Cinza-03, #454545);
+    color: var(--Black-Cinza-04, #747474);
     font-family: "Montserrat";
-    font-size: 18px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-05, #FFF);
+    display: flex;
+    height: 41px;
+    padding: 12px 12px 12px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
 }
 
 .dia-Atual{
     display: flex;
     gap: 20px;
-    justify-content: center;
     align-items: center;
     margin: 0px!important;
 }
 
 .dia-Atual span{
     display: flex;
-    width: 25px;
-    height: 25px;
+    height: 41px;
+    padding: 12px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    border: 1px solid var(--White-Base-01, #CCC);
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
+    gap: 4px;
     cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--White-Base-02, #E8E7E7);
+    background: var(--White-Base-05, #FFF);
 }
 
 .lista-agenda{
     width: 100%;
+    display: flex;
+    gap: 20px;
+  
+}
+.lista-agenda-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }

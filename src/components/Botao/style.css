@@ -24,9 +24,8 @@
     width: 100%;
     gap: 20px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     padding: 2px;
-
 }
 .string-botao{
     color: var(--Black-Cinza-04, #747474);
@@ -36,5 +35,4 @@
     font-weight: 500;
     line-height: normal;
     transition: color 0.5s ease;
-
 }

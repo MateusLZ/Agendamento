@@ -4,6 +4,8 @@ import Navegacao from "../../components/Navegacao/Navegacao";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 import TabelaAgenda from "../../components/TabelaAgenda/TabelaAgenda";
+import AgendamentosMarcados from "../../components/AgendamentosMarcados/AgendamentosMarcados";
+
 import { UserContext } from "../../Context/Provider";
 
 
@@ -12,7 +14,6 @@ function Agenda() {
   // Estado para armazenar a data atual
   const [dataAtual, setDataAtual] = useState(new Date());
   const { userIsAdmin } = useContext(UserContext);
-
 
   // Função para avançar um dia
   const avancarDia = () => {
@@ -50,9 +51,11 @@ function Agenda() {
             </p>
           </div>
 
-            {
+        </div>
 
-userIsAdmin &&
+        <div className="lista-agenda">
+          <div className="lista-agenda-container">
+
           <div className="dia-Atual">
           <span
             id="prev"
@@ -61,33 +64,26 @@ userIsAdmin &&
           >
             <FaChevronLeft className='chevron' />
           </span>
-            <h2 className="data_formatada">{dataFormatada}</h2>
-            <span
+
+          <span
             id="next"
             className="material-symbols-rounded"
             onClick={avancarDia}
           >
            <FaChevronRight className='chevron'  />
           </span>
+            <h2 className="data_formatada tipografia-data">{dataFormatada}</h2>
+           
           </div>
 
-        }
-
-          <div className="icons">
-          
-          
-            <div className="bola">
-              <FaWhatsapp size={24} />
-            </div>
-            <div className="bola">
-              <FaInstagram size={24} />
-            </div>
-          </div>
+    <div>
+         <TabelaAgenda onDateSelect={dataFormatadaDigito} />
+    </div>
         </div>
 
-        <div className="lista-agenda">
-        {userIsAdmin &&  <TabelaAgenda onDateSelect={dataFormatadaDigito} />}
-
+        <div>
+          <AgendamentosMarcados onDateSelect={dataFormatadaDigito} />
+        </div>
          
         </div>
       </div>

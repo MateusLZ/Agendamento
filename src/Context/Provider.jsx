@@ -12,14 +12,27 @@ const UserProvider = ({ children }) => {
   const [userRole, setRoleUser] = useState("");
   const [userId, setUserId] = useState(""); 
   const [userDataLoaded, setUserDataLoaded] = useState(false); 
+  const [isActive, setIsActive] = useState(false);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUserIsAdmin(false);
-    setUserName("");
-    setUserDataLoaded(false)
-  };
+  const config = {
+    headers: {
+        Authorization: `Bearer ${token}`
+    }
+};
+
+  const logout = async () => {
+    try {
+      await axios.post("http://localhost:8080/auth/logout",null, config)
+        localStorage.removeItem("token");
+        setToken(null);
+        setUserIsAdmin(false);
+        setUserName("");
+        setUserDataLoaded(false);
+        setIsActive(false);
+    } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+    }
+};
 
   const login = async (credentials) => {
     try {
@@ -60,15 +73,18 @@ const UserProvider = ({ children }) => {
           },
         });
 
-        const {userId, userName, name, isAdmin,   } = response.data; 
+        const {userId, userName, name, isAdmin, is_active   } = response.data; 
+        console.log(response.data)
         setUserId(userId);
         setEmailUser(name);
         setUserName(userName);
         setUserIsAdmin(isAdmin);
         setUserDataLoaded(response.data); 
         setRoleUser(response.data.Role)
+        setIsActive(is_active);
       } catch (error) {
         console.error("Erro ao recuperar dados do usuário:", error);
+        setIsActive(false);
         setUserDataLoaded(false); // Definir que os dados do usuário não foram carregados devido a um erro
       }
     }
@@ -91,7 +107,7 @@ const UserProvider = ({ children }) => {
     login,
     register,
     userDataLoaded,
-    
+    isActive,
   };
 
   return (

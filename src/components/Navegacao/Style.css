@@ -12,12 +12,33 @@
 .user-profile{
     border-top: 2px solid #E8E7E7;
     display: flex;
+    justify-content:space-around;
     align-items: center;
     gap: 15px;
-    padding: 20px;
-    width: 90%;
-    
+    width: 100%;
+    padding-top: 20px;
 }
+.chevron-sair{
+    position: relative;
+}
+.logout-app{ 
+    padding: 16px;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--Small, 8px);
+    border: 1px solid var(--White-Base-03, #F0F0F0);
+    background: var(--White-Base-05, #FFF);
+    color: var(--Black-Cinza-04, #747474);
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    position: absolute;
+    width: 130px;
+    top: -70px;
+    right: 0;
+    }
 .user-info{
     height: 15%;
     display: flex;
@@ -46,7 +67,7 @@
 }
 
 .name-salao{
-    display: flex;
+    display: flex; 
     align-items: center;
     height: 20%;
     padding: 20px, 20px, 14px, 20px;

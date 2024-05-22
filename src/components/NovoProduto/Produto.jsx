@@ -33,6 +33,7 @@ const Produto = ({ onProdutoAdicionado }) => {
     };
 
     const handleImgChange = (e) => {
+        console.log(e)
         if (e.target.files[0]) {
             setImgURL(e.target.files[0]);
         }
@@ -45,6 +46,7 @@ const Produto = ({ onProdutoAdicionado }) => {
         }
     
         const storegaRef = ref(storage, `images/${imgURL.name}`);
+        console.log(storegaRef)
         const uploadTask = uploadBytesResumable(storegaRef, imgURL);
     
         uploadTask.on(
@@ -95,6 +97,7 @@ const Produto = ({ onProdutoAdicionado }) => {
     };
     
 
+   
     const handleFuncionarioCheckboxChange = (id) => {
         console.log("ID do funcionário:", id);
         setFuncionarios(
@@ -117,7 +120,8 @@ const Produto = ({ onProdutoAdicionado }) => {
 
                 const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", config);
                 // Inicializa os valores de 'selecionado' como 'false' para todos os funcionários
-                setFuncionarios(response.data.map((funcionario) => ({ ...funcionario, selecionado: false })));
+                console.log(response.data)
+                setFuncionarios(response.data.content.map((funcionario) => ({ ...funcionario, selecionado: false })));
             } catch (error) {
                 console.error("Erro ao recuperar os dados dos funcionários:", error);
             }
@@ -127,14 +131,9 @@ const Produto = ({ onProdutoAdicionado }) => {
     }, []);
 
     const handleFuncionariosSelecionadosChange = (values) => {
-        // Extrair apenas os IDs dos funcionários
         const selectedIds = values.map(value => value.split(':')[1]);
-      
-        // Atualizar o estado dos funcionários selecionados com os IDs
         setFuncionariosSelect(selectedIds);
-      
-        // Imprimir no console os IDs dos funcionários selecionados
-        console.log('IDs dos funcionários selecionados no Produto:', selectedIds);
+        console.log(idsSelecionados)
       };
       
 
@@ -157,7 +156,7 @@ const Produto = ({ onProdutoAdicionado }) => {
                 <div>
                 <p>Novo serviço</p>
                 <InputCustomizado
-                    name="nomeProduto"
+                    name="nomeProduto" 
                     placeholder="Nome do serviço"
                     color="black"
                     type="string"
@@ -169,7 +168,12 @@ const Produto = ({ onProdutoAdicionado }) => {
 
                 <div>
                     <p>Profissionais</p>
-                <MultipleOptionsSelectMenu funcionarios={funcionarios} onFuncionariosSelecionadosChange={handleFuncionariosSelecionadosChange} onChange={handleFuncionarioCheckboxChange} />
+                    <MultipleOptionsSelectMenu
+                        items={funcionarios}
+                        labelKey="userName"
+                        onItemsSelecionadosChange={handleFuncionariosSelecionadosChange}
+                        />
+
                     </div>
 
                 <div>
