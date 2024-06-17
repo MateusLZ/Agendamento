@@ -1,98 +1,135 @@
-import React, { useState, useEffect,useContext } from "react";
-import axios from "axios";
-import { getDownloadURL, ref } from "firebase/storage";
-import { UserContext } from "../../Context/Provider";
-import Modal from "../Modal";
-import InputCustomizado from "../Input";
-import Button from "../Botao/Botao"
-
-import { storage } from "../../firebase";
+import React, { useState, useEffect,useContext } from "react"
+import axios from "axios"
+import { getDownloadURL, ref } from "firebase/storage"
+import { UserContext } from "../../Context/Provider"
+import Modal from "../Modal"
+import InputCustomizado from "../Input"
+import { storage } from "../../firebase"
+import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu"
+import Editar from "../../images/Edit.svg"
 import "./Style.css"
 
 
 const ListaServico = ({ produtoAdicionado }) => {
-    const [produtos, setProdutos] = useState([]);
-    const [imgURLs, setImgURLs] = useState({}); 
-    const { userIsAdmin } = useContext(UserContext);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [nomeProduto, setNomeProduto] = useState("");
-    const [descricaoProduto, setDescricaoProduto] = useState("");
-    const [idProduto, setIdProduto] = useState("");
-    const [userIds, setUserIds] = useState([]);
-    const [imgURL, setImgURL] = useState('');
-    const token = localStorage.getItem("token");
+    const [produtos, setProdutos] = useState([])
+    const [imgURLs, setImgURLs] = useState({}) 
+    const { userIsAdmin } = useContext(UserContext)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [nomeProduto, setNomeProduto] = useState("")
+    const [descricaoProduto, setDescricaoProduto] = useState("")
+    const [idProduto, setIdProduto] = useState("")
+    const [userIds, setUserIds] = useState([])
+    const [imgURL, setImgURL] = useState('')
+    const [funcionarios, setFuncionarios] = useState([]);
+    const [funcionariosSelecionados, setFuncionariosSelecionados] = useState([]);
+    const token = localStorage.getItem("token")
+
+
+    useEffect(() => {
+        const buscarFuncionarios = async () => {
+            try {
+                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setFuncionarios(response.data.content);
+            } catch (error) {
+                console.error("Erro ao recuperar os dados dos funcionários:", error)
+            }
+        }
+        buscarFuncionarios()
+    }, [token])
+    
+   
+    const handleFuncionariosSelecionadosChange = (values) => {
+        const selectedIds = values.map(value => value.split(':')[1])
+        setUserIds(selectedIds)
+      }
 
 
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    };
+    }
 
+    
     const handleOpenEditModal = (produto) => {
-        setNomeProduto(produto.nome)
-        setDescricaoProduto(produto.descricao)
+        setNomeProduto(produto.nome);
+        setDescricaoProduto(produto.descricao);
         setIdProduto(produto.codigo);
-        setUserIds(produto.usuarios.map(usuario => usuario.id));
+        const funcionariosComSelecao = funcionarios.map(funcionario => ({
+            ...funcionario,
+            selecionado: produto.usuarios.some(usuario => usuario.id === funcionario.id)
+        }));
+        const selectedUserIds = funcionariosComSelecao
+            .filter(funcionario => funcionario.selecionado)
+            .map(funcionario => funcionario.id);
+        setFuncionarios(funcionariosComSelecao);
+        setUserIds(selectedUserIds); 
         setIsModalOpen(true);
     };
 
+
     const handleCloseEditModal = () => {
-        setNomeProduto("")
-        setDescricaoProduto("")
+        setNomeProduto("");
+        setDescricaoProduto("");
         setIdProduto("");
+        setUserIds([]);
         setIsModalOpen(false);
     };
 
     const getImgURL = async (nomeImagem) => {
-        const storageRef = ref(storage, nomeImagem);
-        const url = await getDownloadURL(storageRef);
-        return url;
-    };
+        const storageRef = ref(storage, nomeImagem)
+        const url = await getDownloadURL(storageRef)
+        return url
+    }
 
     const fetchProdutos = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/listar", config);
-            setProdutos(response.data); // Define os produtos retornados pela API no estado
+            const response = await axios.get("http://localhost:8080/listar", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setProdutos(response.data);
         } catch (error) {
-            console.error("Erro ao buscar produtos:", error);
+            console.error("Erro ao buscar produtos:", error)
         }
-    };
+    }
 
     useEffect(() => {
-        // Chama a função de busca de produtos ao montar o componente
-        fetchProdutos();
-    },  [produtoAdicionado]);
+        fetchProdutos()
+    },  [produtoAdicionado])
     
     useEffect(() => {
-        // Para cada produto, obtenha a URL de download da imagem
         const fetchImgURLs = async () => {
-            const urls = {};
+            const urls = {}
             await Promise.all(produtos.map(async (produto) => {
-                const imgURL = await getImgURL(produto.nomeImagem);
-                urls[produto.codigo] = imgURL;
-            }));
-            setImgURLs(urls);
-        };
+                const imgURL = await getImgURL(produto.nomeImagem)
+                urls[produto.codigo] = imgURL
+            }))
+            setImgURLs(urls)
+        }
 
-        fetchImgURLs();
+        fetchImgURLs()
 
-    }, [produtos]);
+    }, [produtos])
 
+    
     const handleEditProduto = () => {
-
         const produtoAtualizado = {
             nome: nomeProduto,
             descricao: descricaoProduto,
+            usuarios: userIds.map(id => ({ id }))  
         };
-    
-        axios.put(`http://localhost:8080/editar/${idProduto}`, produtoAtualizado, config)
-            .then(response => {
+
+        axios.put(`http://localhost:8080/editar/${idProduto}`, produtoAtualizado, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((response) => {
                 console.log("Produto editado com sucesso:", response.data);
-                handleCloseEditModal(); // Fecha o modal após a edição
+                handleCloseEditModal();
                 fetchProdutos();
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Erro ao editar produto:", error);
             });
     };
@@ -106,31 +143,28 @@ const ListaServico = ({ produtoAdicionado }) => {
             }
         })
         .then(response => {
-            console.log("Relacionamentos entre produto e usuários removidos com sucesso:", response.data);
-            // Em seguida, chame a função para excluir o produto
-            handleExcluirProduto();
+            console.log("Relacionamentos entre produto e usuários removidos com sucesso:", response.data)
+            handleExcluirProduto()
         })
         .catch(error => {
-            console.error("Erro ao remover relacionamentos entre produto e usuários:", error);
-        });
-    };
+            console.error("Erro ao remover relacionamentos entre produto e usuários:", error)
+        })
+    }
     
 
-        const handleExcluirProduto = () => {
-            axios.delete(`http://localhost:8080/remover/${idProduto}`, config)
-            .then(response => {
+    const handleExcluirProduto = () => {
+        axios.delete(`http://localhost:8080/remover/${idProduto}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((response) => {
                 console.log("Produto removido com sucesso:", response.data);
-                // Atualize a lista de produtos após a exclusão
-                handleCloseEditModal(); // Fecha o modal após a edição
+                handleCloseEditModal();
                 fetchProdutos();
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Erro ao remover produto:", error);
             });
-        }
-   
-
-        
+    };
 
     return (  
         <div className="lista-produtos">
@@ -140,7 +174,7 @@ const ListaServico = ({ produtoAdicionado }) => {
                     <li className="produtos" key={produto.codigo}>
 
                         <div className="service-img">
-                         <img className="img-produtos" src={imgURLs[produto.codigo]} alt="Imagem do Produto" />
+                          <img className="img-produtos" src={imgURLs[produto.codigo]} alt="Imagem do Produto" /> 
                         </div>
 
                         <div className="service-nomeDescr">
@@ -158,22 +192,33 @@ const ListaServico = ({ produtoAdicionado }) => {
                             <p className="title-descricao">Profissionais desse serviço</p>
                             <ul className="funcionarios-service">
                             {produto.usuarios.map(funcionario => (
-                                <li className="nome-funcionario" key={funcionario.id}>
-                                    {funcionario.userName}
-                                </li>
-                                ))}
+                                        <li className="nome-funcionario" key={funcionario.id}>
+                                            {funcionario.userName.split(' ')[0]}
+                                        </li>
+                                    ))}
                             </ul>
                         </div>
 
                        
-                        {userIsAdmin === true && <p className="btn-editar" onClick={() => handleOpenEditModal(produto)}>Editar</p>} 
+                        {userIsAdmin === true &&
+                        <img  className="btn-editar" size={17} onClick={() => handleOpenEditModal(produto)} src={Editar} alt="" />
+                       } 
                     </li>
                 ))}
             </ul>
             </div> 
 
+        
+
             <Modal isOpen={isModalOpen} onClose={handleCloseEditModal}>
-            <InputCustomizado
+                <div className="title-modal-table">
+                    <h3>Editar Serviço</h3>
+                </div>
+             
+
+                <div>
+                <p>Novo serviço</p>
+                <InputCustomizado
                     name="nomeProduto"
                     placeholder="Nome do serviço"
                     color="black"
@@ -182,7 +227,21 @@ const ListaServico = ({ produtoAdicionado }) => {
                     value={nomeProduto}
                     onChange={e => setNomeProduto(e.target.value)}
                 />
-                <InputCustomizado
+                </div>
+
+                <div>
+                    <p>Profissionais</p>
+                    <MultipleOptionsSelectMenu
+                        items={funcionarios}
+                        labelKey="userName"
+                        selectedItems={funcionarios.filter((funcionario) => funcionario.selecionado)}
+                        onItemsSelecionadosChange={handleFuncionariosSelecionadosChange}
+                    />
+                    </div>
+
+                <div>
+                    <p>Descrição</p>
+                    <InputCustomizado
                     name="descricaoProduto"
                     placeholder="Descrição do serviço"
                     color="black"
@@ -191,19 +250,22 @@ const ListaServico = ({ produtoAdicionado }) => {
                     value={descricaoProduto}
                     onChange={e => setDescricaoProduto(e.target.value)}
                 />
-                {/* <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImgChange}
-                /> */}
-              
-                 <Button text='Editar' background='#c6c6c6'  onClick={handleEditProduto}  />
-                 <Button text='Excluir' background='#c6c6c6'  onClick={handleExcluirProdutoDoUsuario}  />
+                </div>
 
+                    
+
+                {/* <div>
+                    <input type="file" accept="image/*" onChange={handleImgChange} />
+                </div> */}
+                <div className="button-modal-table">
+            <p onClick={handleCloseEditModal} className="buttonPCancelar color-preto">Cancelar</p>
+            <p onClick={handleEditProduto} className="buttonPVermelho color-vermelho">Cadastrar</p>
+            <p onClick={handleExcluirProdutoDoUsuario} className="buttonPCancelar color-preto">Excluir</p>
+          </div>
             </Modal>
 
         </div>
-    );
+    )
 }
 
-export default ListaServico;
+export default ListaServico

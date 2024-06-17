@@ -1,23 +1,19 @@
-import "./Style.css";
-import Navegacao from "../../components/Navegacao/Navegacao";
-import React, { useContext, useState } from "react";
-import axios from "axios";
-import { UserContext } from "../../Context/Provider";
-import InputCustomizado from "../../components/Input";
-import ButtonCustomizado from "../../components/Button";
-import CadastrarFuncionario from "../../components/CadastraFuncionario/CadastraFuncionario";
-import ListarFuncionarios from "../../components/ListarFuncionarios/ListarFuncionarios";
+import "./Style.css"
+import Navegacao from "../../components/Navegacao/Navegacao"
+import React, { useContext, useState } from "react"
+import CadastrarFuncionario from "../../components/CadastraFuncionario/CadastraFuncionario"
+import ListarFuncionarios from "../../components/ListarFuncionarios/ListarFuncionarios"
 
 
 
 function Funcionarios() {
-  const [atualizarLista, setAtualizarLista] = useState(false);
+  const [atualizarLista, setAtualizarLista] = useState(false)
 
 
 
   const atualizarListaFuncionarios = () => {
-    setAtualizarLista(true);
-};
+    setAtualizarLista(true)
+}
 
  
   return (
@@ -45,7 +41,7 @@ function Funcionarios() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Funcionarios;
+export default Funcionarios

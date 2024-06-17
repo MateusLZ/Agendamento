@@ -1,39 +1,34 @@
-import React, { useState,useContext } from "react";
-import "./Style.css";
-import Navegacao from "../../components/Navegacao/Navegacao";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
-import TabelaAgenda from "../../components/TabelaAgenda/TabelaAgenda";
-import AgendamentosMarcados from "../../components/AgendamentosMarcados/AgendamentosMarcados";
-
-import { UserContext } from "../../Context/Provider";
+import React, { useState,useContext } from "react"
+import "./Style.css"
+import Navegacao from "../../components/Navegacao/Navegacao"
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6"
+import TabelaAgenda from "../../components/TabelaAgenda/TabelaAgenda"
+import AgendaUser from "../../components/AgendaUser/AgendaUser"
+import AgendamentosMarcados from "../../components/AgendamentosMarcados/AgendamentosMarcados"
+import { UserContext } from "../../Context/Provider"
 
 
 
 function Agenda() {
-  // Estado para armazenar a data atual
-  const [dataAtual, setDataAtual] = useState(new Date());
-  const { userIsAdmin } = useContext(UserContext);
+  const [dataAtual, setDataAtual] = useState(new Date())
+  const { userIsAdmin, userRole } = useContext(UserContext)
 
-  // Função para avançar um dia
   const avancarDia = () => {
-    const novaData = new Date(dataAtual);
-    novaData.setDate(novaData.getDate() + 1);
-    setDataAtual(novaData);
-  };
+    const novaData = new Date(dataAtual)
+    novaData.setDate(novaData.getDate() + 1)
+    setDataAtual(novaData)
+  }
 
-  // Função para retroceder um dia
   const retrocederDia = () => {
-    const novaData = new Date(dataAtual);
-    novaData.setDate(novaData.getDate() - 1);
-    setDataAtual(novaData);
-  };
+    const novaData = new Date(dataAtual)
+    novaData.setDate(novaData.getDate() - 1)
+    setDataAtual(novaData)
+  }
 
-  // Formatar a data atual
-  const options = {  year: 'numeric', month: 'long', day: 'numeric' };
-  const dataFormatada = dataAtual.toLocaleDateString('pt-BR', options);
-  const dataDigito = { day: '2-digit', month: '2-digit', year: '2-digit' };
-  const dataFormatadaDigito = dataAtual.toLocaleDateString('pt-BR', dataDigito);
+  const options = {  year: 'numeric', month: 'long', day: 'numeric' }
+  const dataFormatada = dataAtual.toLocaleDateString('pt-BR', options)
+  const dataDigito = { day: '2-digit', month: '2-digit', year: '2-digit' }
+  const dataFormatadaDigito = dataAtual.toLocaleDateString('pt-BR', dataDigito)
 
   return (
     <div className="container-home">
@@ -53,7 +48,21 @@ function Agenda() {
 
         </div>
 
-        <div className="lista-agenda">
+        {(userRole === "USER" && (
+            <div className="container-agenda-user">
+              <div>
+                <h2 className="title-agenda">Meus Horários</h2>
+              </div>
+
+              <div>
+              <AgendaUser/>
+              </div>
+
+            </div>
+))}
+
+  {(userRole != "USER" && (
+    <div className="lista-agenda">
           <div className="lista-agenda-container">
 
           <div className="dia-Atual">
@@ -86,9 +95,12 @@ function Agenda() {
         </div>
          
         </div>
+
+  ))}
+        
       </div>
     </div>
-  );
+  )
 }
 
-export default Agenda;
+export default Agenda

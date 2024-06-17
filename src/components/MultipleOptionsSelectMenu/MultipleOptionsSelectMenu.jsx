@@ -1,14 +1,14 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import Chip from '@mui/material/Chip'
+import { useTheme } from '@mui/material/styles'
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
@@ -16,26 +16,26 @@ const MenuProps = {
       width: 250,
     },
   },
-};
+}
 
 export default function MultipleOptionsSelectMenu({ items,onItemsSelecionadosChange,labelKey  }) {
-  const theme = useTheme();
-  const [selectedItems, setSelectedItems] = React.useState([]);
+  const theme = useTheme()
+  const [selectedItems, setSelectedItems] = React.useState([])
 
   const handleChange = (event) => {
     const {
       target: { value },
-    } = event;
+    } = event
     setSelectedItems(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
-    );
-    onItemsSelecionadosChange(value);
-  };
+    )
+    onItemsSelecionadosChange(value)
+  }
 
   return (
     <div>
-      <FormControl  sx={{ m: 1, width: '100%', borderRadius: '8px',border:'1px solid var(--White-Base-02, #E8E7E7);' }}>
+      <FormControl  sx={{ m: 1, width: '100%', borderRadius: '8px',border:'1px solid var(--White-Base-02, #E8E7E7)' }}>
         <InputLabel  id="demo-multiple-chip-label">Selecionar</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
@@ -65,7 +65,7 @@ export default function MultipleOptionsSelectMenu({ items,onItemsSelecionadosCha
         </Select>
       </FormControl>
     </div>
-  );
+  )
 }
 
 function getStyles(name, personName, theme) {
@@ -74,5 +74,5 @@ function getStyles(name, personName, theme) {
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
-  };
+  }
 }

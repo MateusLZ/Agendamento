@@ -1,4 +1,4 @@
-import { ImExit } from "react-icons/im";
+import { ImExit } from "react-icons/im"
 import HomeSvg from "../../images/home.svg"
 import Calendario from "../../images/calender.svg"
 import Maleta from "../../images/maleta.svg"
@@ -31,11 +31,11 @@ const Botao = ({
             case 'config':
                 return <img  src={config} style={{ width: '23px' }}  />
             case 'exit':
-                return <ImExit size={22}  />;
+                return <ImExit size={22}  />
             default:
-                return null;
+                return null
         }
-    };
+    }
 
     
 
@@ -51,7 +51,7 @@ const Botao = ({
         </li>
         </div>
 
-    );
+    )
 }
  
-export default Botao;
+export default Botao

@@ -76,13 +76,15 @@
 }
 .btn-editar{
     color: black;
-    padding: 2px 15px;
     background-color: rgb(98, 0, 255);
-    border-radius: 12px;
     cursor: pointer;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    right: 15px;
+    top: 12px;
+    padding: 7.111px;
+    border-radius: 104.55px;
+    border: 1.045px solid var(--White-Base-03, #F0F0F0);
+    background: var(--White-Base-05, #FFF);
 }
 
 .title-service{

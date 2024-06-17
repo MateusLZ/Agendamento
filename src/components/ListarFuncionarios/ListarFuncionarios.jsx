@@ -1,20 +1,59 @@
-import "./Style.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Editar from "../../images/Edit.svg";
-import BallVerd from "../../images/BolinhaVerde.svg";
-import BallCinza from "../../images/BolinhaCinza.svg";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import "./Style.css"
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import BallVerd from "../../images/BolinhaVerde.svg"
+import BallCinza from "../../images/BolinhaCinza.svg"
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6"
+import { FaRegTrashAlt } from "react-icons/fa";
+import Modal from "../Modal"
+import { FaCheck } from "react-icons/fa6";
+import { FaTimes } from "react-icons/fa";
 
 
 function ListarFuncionarios({ atualizarLista, setAtualizarLista }) {
-    const [funcionarios, setFuncionarios] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage] = useState(8);
-    console.log(currentPage)
+    const [funcionarios, setFuncionarios] = useState([])
+    const [currentPage, setCurrentPage] = useState(0)
+    const [isModalOpenStats, setIsModalOpenStats] = useState(false)
+    const [statusMessage, setStatusMessage] = useState("")
+    const [statusType, setStatusType] = useState("")
+    const [itemsPerPage] = useState(8)
 
-    // Função para buscar os funcionários
     const buscarFuncionarios = async () => {
+        try {
+            const token = localStorage.getItem("token")
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const response = await axios.get(`http://localhost:8080/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config)
+            setFuncionarios(response.data.content)
+        } catch (error) {
+            console.error("Erro ao recuperar os dados dos funcionários:", error)
+        } finally {
+            setAtualizarLista(false)
+        }
+    }
+
+    useEffect(() => {
+        if (atualizarLista) {
+            buscarFuncionarios()
+        }
+    }, [atualizarLista, setAtualizarLista, currentPage]) 
+    useEffect(() => {
+        buscarFuncionarios()
+    }, [currentPage]) 
+
+const totalPages = Math.ceil(funcionarios.length / itemsPerPage)
+
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber >= 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber)
+        }
+    }
+
+    const excluirFuncionario = async (funcionarioId) => {
         try {
             const token = localStorage.getItem("token");
             const config = {
@@ -23,39 +62,27 @@ function ListarFuncionarios({ atualizarLista, setAtualizarLista }) {
                 }
             };
 
-            const response = await axios.get(`http://localhost:8080/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config);
-            // Dados dos funcionários recuperados com sucesso
-            console.log(response)
-            setFuncionarios(response.data.content);
+            console.log(funcionarioId)
+    
+            await axios.delete(`http://localhost:8080/auth/excluir/${funcionarioId}`, config);
+            setAtualizarLista(true)
+            setStatusMessage("Funcionario excluido com sucesso");
+            setStatusType("success");
+            setIsModalOpenStats(true);
+            setTimeout(() => {
+                setIsModalOpenStats(false);
+            }, 2000);
         } catch (error) {
-            // Ocorreu um erro ao recuperar os dados dos funcionários
-            console.error("Erro ao recuperar os dados dos funcionários:", error);
-        } finally {
-            // Resetar a flag após a atualização da lista
-            setAtualizarLista(false);
+            console.error("Erro ao excluir funcionário:", error);
+            setStatusMessage("Erro ao excluir funcionário");
+            setStatusType("error");
+            setIsModalOpenStats(true);
+            setTimeout(() => {
+                setIsModalOpenStats(false);
+            }, 2000);
         }
     };
-
-    useEffect(() => {
-        // Verificar se a lista precisa ser atualizada
-        if (atualizarLista) {
-            buscarFuncionarios();
-        }
-    }, [atualizarLista, setAtualizarLista, currentPage]); // Adicione currentPage como dependência para buscar dados quando a página mudar
-
-    // Executar a busca dos funcionários quando o componente for montado
-    useEffect(() => {
-        buscarFuncionarios();
-    }, [currentPage]); // Atualize a lista quando a página mudar
-
-    // Função para lidar com a mudança de página
-const totalPages = Math.ceil(funcionarios.length / itemsPerPage);
-
-    const handlePageChange = (pageNumber) => {
-        if (pageNumber >= 0 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        }
-    };
+    
 
     return (
         <div className="tabela-funcionarios">
@@ -71,7 +98,7 @@ const totalPages = Math.ceil(funcionarios.length / itemsPerPage);
                         <p>Status</p>
                     </li>
                     <li>
-                        <p>Ações</p>
+                        <p>Excluir</p>
                     </li>
                 </ul>
             </div>
@@ -98,8 +125,8 @@ const totalPages = Math.ceil(funcionarios.length / itemsPerPage);
                                     </div>
                                 }
                             </div>
-                            <div>
-                                <img src={Editar} alt="" />
+                            <div onClick={() => excluirFuncionario(funcionario.id)}>
+                                <FaRegTrashAlt className="clickable-icon" size={18} />
                             </div>
                         </div>
                     </li>
@@ -119,8 +146,15 @@ const totalPages = Math.ceil(funcionarios.length / itemsPerPage);
                     )
                 :null}
             </div>
+
+            <Modal isOpen={isModalOpenStats} onClose={() => setIsModalOpenStats(false)} showCloseButton={false}>
+                <div className={`container-stats title-modal-stats ${statusType === "success" ? "color-sucesso" : "color-erro"}`}>
+                    <p>{statusMessage}</p>
+                    {statusType === "success" ? <FaCheck size={20} /> : <FaTimes size={20} />}
+                </div>
+            </Modal>
         </div>
-    );
+    )
 }
 
-export default ListarFuncionarios;
+export default ListarFuncionarios

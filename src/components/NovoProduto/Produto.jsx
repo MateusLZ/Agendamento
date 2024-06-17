@@ -1,69 +1,67 @@
 // Produto.js
-import React, { useState, useEffect } from "react";
-import Button from "../Botao/Botao";
-import Modal from "../Modal";
-import InputCustomizado from "../Input";
-import axios from "axios";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "../../firebase";
-import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu";
-import { FaPlus } from "react-icons/fa6";
+import React, { useState, useEffect } from "react"
+import Modal from "../Modal"
+import InputCustomizado from "../Input"
+import axios from "axios"
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+import { storage } from "../../firebase"
+import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu"
+import { FaPlus } from "react-icons/fa6"
 import "./Style.css"
 
 
 
 const Produto = ({ onProdutoAdicionado }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [nomeProduto, setNomeProduto] = useState("");
-    const [marcaProduto, setMarcaProduto] = useState("");
-    const [imgURL, setImgURL] = useState("");
-    const [progress, setProgress] = useState(0);
-    const [funcionarios, setFuncionarios] = useState([]);
-    const [idsSelecionados, setFuncionariosSelect] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [nomeProduto, setNomeProduto] = useState("")
+    const [marcaProduto, setMarcaProduto] = useState("")
+    const [imgURL, setImgURL] = useState("")
+    const [progress, setProgress] = useState(0)
+    const [funcionarios, setFuncionarios] = useState([])
+    const [idsSelecionados, setFuncionariosSelect] = useState([])
 
 
     const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
+        setIsModalOpen(true)
+    }
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setNomeProduto("");
-        setMarcaProduto("");
-    };
+        setIsModalOpen(false)
+        setNomeProduto("")
+        setMarcaProduto("")
+    }
 
     const handleImgChange = (e) => {
-        console.log(e)
         if (e.target.files[0]) {
-            setImgURL(e.target.files[0]);
+            setImgURL(e.target.files[0])
         }
-    };
+    }
 
     const handleCadastrarProduto = () => {
         if (!imgURL) {
-            console.error("Selecione uma imagem antes de cadastrar o produto.");
-            return;
+            console.error("Selecione uma imagem antes de cadastrar o produto.")
+            return
         }
     
-        const storegaRef = ref(storage, `images/${imgURL.name}`);
+        const storegaRef = ref(storage, `images/${imgURL.name}`)
         console.log(storegaRef)
-        const uploadTask = uploadBytesResumable(storegaRef, imgURL);
+        const uploadTask = uploadBytesResumable(storegaRef, imgURL)
     
         uploadTask.on(
             "state_changed",
             (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setProgress(progress);
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                setProgress(progress)
             },
             (error) => {
-                console.log(error);
+                console.log(error)
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    setImgURL(url);
-                });
+                    setImgURL(url)
+                })
             }
-        );
+        )
     
         
     
@@ -74,67 +72,65 @@ const Produto = ({ onProdutoAdicionado }) => {
                 nomeImagem: `images/${imgURL.name}`,
             },
             userIds: idsSelecionados, // Aqui estão os IDs dos funcionários selecionados
-        };
+        }
     
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        };
+        }
     
         axios
             .post("http://localhost:8080/cadastrar", novoProduto, config)
             .then((response) => {
-                console.log("Produto cadastrado com sucesso:", response.data);
-                handleCloseModal();
-                onProdutoAdicionado();
+                console.log("Produto cadastrado com sucesso:", response.data)
+                handleCloseModal()
+                onProdutoAdicionado()
             })
             .catch((error) => {
-                console.error("Erro ao cadastrar produto:", error);
-                handleCloseModal();
-            });
-    };
+                console.error("Erro ao cadastrar produto:", error)
+                handleCloseModal()
+            })
+    }
     
 
    
     const handleFuncionarioCheckboxChange = (id) => {
-        console.log("ID do funcionário:", id);
+        console.log("ID do funcionário:", id)
         setFuncionarios(
             funcionarios.map((funcionario) =>
                 funcionario.id === id ? { ...funcionario, selecionado: !funcionario.selecionado } : funcionario
             )
-        );
-    };
+        )
+    }
 
     useEffect(() => {
         // Função para buscar os funcionários
         const buscarFuncionarios = async () => {
             try {
-                const token = localStorage.getItem("token");
+                const token = localStorage.getItem("token")
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`, 
                     },
-                };
+                }
 
-                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", config);
-                // Inicializa os valores de 'selecionado' como 'false' para todos os funcionários
-                console.log(response.data)
-                setFuncionarios(response.data.content.map((funcionario) => ({ ...funcionario, selecionado: false })));
+                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", config)
+                setFuncionarios(response.data.content.map((funcionario) => ({ ...funcionario, selecionado: false })))
             } catch (error) {
-                console.error("Erro ao recuperar os dados dos funcionários:", error);
+                console.error("Erro ao recuperar os dados dos funcionários:", error)
             }
-        };
+        }
 
-        buscarFuncionarios();
-    }, []);
+        buscarFuncionarios()
+    }, [])
 
     const handleFuncionariosSelecionadosChange = (values) => {
-        const selectedIds = values.map(value => value.split(':')[1]);
-        setFuncionariosSelect(selectedIds);
+        const selectedIds = values.map(value => value.split(':')[1])
+        setFuncionariosSelect(selectedIds)
         console.log(idsSelecionados)
-      };
+      }
       
 
     return (
@@ -200,7 +196,7 @@ const Produto = ({ onProdutoAdicionado }) => {
           </div>
             </Modal>
         </div>
-    );
-};
-
-export default Produto;
+    )
+}
+ 
+export default Produto

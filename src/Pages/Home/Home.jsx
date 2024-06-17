@@ -1,32 +1,37 @@
-import "./Style.css";
-import Navegacao from "../../components/Navegacao/Navegacao";
-import { UserContext } from "../../Context/Provider";
-import { useContext,useState } from "react";
+import "./Style.css"
+import Navegacao from "../../components/Navegacao/Navegacao"
+import { UserContext } from "../../Context/Provider"
+import { useContext,useState } from "react"
 import Calendario from "../../components/Calendario/Calendario"
 import Tabela from "../../components/Tabela/Tabela"
-import { FaWhatsapp,FaInstagram  } from "react-icons/fa";
-import Agendamentos from "../../components/Agendamentos/Agendamentos.jsx";
+import { FaWhatsapp,FaInstagram  } from "react-icons/fa"
+import Agendamentos from "../../components/Agendamentos/Agendamentos.jsx"
+import { FaArrowRightLong } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom"
 
 
 
 function Home() { 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [exclusao, setExclusao] = useState(false);
-  const { userName,userDataLoaded, token } = useContext(UserContext);
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [exclusao, setExclusao] = useState(false)
+  const { userName,userDataLoaded, token } = useContext(UserContext)
+  const navigate = useNavigate()
 
+  const handleNavigateToAgendamentos = () => {
+    navigate("/agenda")
+}
 
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
-  };
+    setSelectedDate(date)
+  }
  
   const handleAttTable = (value) => {
-    setExclusao(value);
-    // Define exclusao como false após 2 segundos
+    setExclusao(value)
     setTimeout(() => {
-      setExclusao(false);
-    }, 2000);
-  };
-  const isAuthenticated = !!token; // Verifica se o token existe
+      setExclusao(false)
+    }, 2000)
+  }
+  const isAuthenticated = !!token 
 
   return (
     <div className="container-home">
@@ -46,7 +51,9 @@ function Home() {
             </div>
 
             <div className="bola">
+              <a href="https://www.instagram.com/cabeloeartsalao/?hl=pt-br">
               <FaInstagram size={24} />
+              </a>
             </div>
           </div>
         </div>
@@ -63,13 +70,17 @@ function Home() {
           </div>
 
           <div className="info-horario">
+            <div className="mais-horarios">
             <h2 className="title-agenda">Meus Horários</h2>
+
+              <FaArrowRightLong className="cursor-pointer" onClick={handleNavigateToAgendamentos} />
+            </div>
             {isAuthenticated && <Agendamentos onAgendamentoExcluido={handleAttTable} />}
           </div>
-        </div>
+        </div> 
       </div>
-    </div>
-  );
+    </div> 
+  )
 }
 
-export default Home;
+export default Home

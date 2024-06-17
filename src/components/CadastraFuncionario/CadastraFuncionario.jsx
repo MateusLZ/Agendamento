@@ -1,48 +1,48 @@
-import "./Style.css";
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../Context/Provider";
-import InputCustomizado from "../../components/Input";
-import ButtonCustomizado from "../../components/Button";
-import Modal from "../Modal";
-import { FaPlus } from "react-icons/fa6";
+import "./Style.css"
+import React, { useContext, useState } from "react"
+import { UserContext } from "../../Context/Provider"
+import InputCustomizado from "../../components/Input"
+import ButtonCustomizado from "../../components/Button"
+import Modal from "../Modal"
+import { FaPlus } from "react-icons/fa6"
 
 
 
 
 function CadastrarFuncionario({ atualizarListaFuncionarios }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [credentials, setCredentials] = useState({ email: "", password: "", userName: "" });
-  const [mensagem, setMensagem] = useState("");
-  const { register } = useContext(UserContext);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [credentials, setCredentials] = useState({ email: "", password: "", userName: "" })
+  const [mensagem, setMensagem] = useState("")
+  const { register } = useContext(UserContext)
 
   const handleCadastroFuncionario = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      let success = false;
+      let success = false
 
-      const userData = { login: credentials.email, userName: credentials.userName, password: credentials.password, role: 2 };
-      success = await register(userData);
+      const userData = { login: credentials.email, userName: credentials.userName, password: credentials.password, role: 2 }
+      success = await register(userData)
 
       if (success) {
-        setMensagem("Funcionário cadastrado com sucesso!");
-        handleCloseModal();
-        atualizarListaFuncionarios();
+        setMensagem("Funcionário cadastrado com sucesso!")
+        handleCloseModal()
+        atualizarListaFuncionarios()
       } else {
-        setMensagem("Erro ao cadastrar funcionário");
+        setMensagem("Erro ao cadastrar funcionário")
       }
     } catch (error) {
-      console.error("Erro ao cadastrar funcionário:", error);
-      setMensagem("Erro ao cadastrar funcionário");
+      console.error("Erro ao cadastrar funcionário:", error)
+      setMensagem("Erro ao cadastrar funcionário")
     }
-  };
+  }
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <div>
@@ -102,7 +102,7 @@ function CadastrarFuncionario({ atualizarListaFuncionarios }) {
         </div>
       </Modal>
     </div>
-  );
+  )
 }
 
-export default CadastrarFuncionario;
+export default CadastrarFuncionario

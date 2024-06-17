@@ -1,149 +1,139 @@
-import "./Style.css";
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { UserContext } from "../../Context/Provider";
-import Modal from "../Modal";
-import Calendario from "../../images/calender.svg";
+import "./Style.css"
+import React, { useState, useEffect, useContext } from "react"
+import axios from "axios"
+import { UserContext } from "../../Context/Provider"
+import Modal from "../Modal"
+import Calendario from "../../images/calender.svg"
 
 
 
 function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
-  const [produtos, setProdutos] = useState([]);
-  const [horarios, setHorarios] = useState([]);
-  const [horaClick, setHoraClick] = useState([]);
-  const [servicoClick, setServClick] = useState([]);
-  const [servicoAgenda, setServAgend] = useState([]);
-  const [cliente, setCliente] = useState([]);
-  const [profissional, setProf] = useState([]);
-  const [phoneCliente, setPhone] = useState([]);
-  const [horaAgenda, setHoraAgend] = useState([]);
-  const { userEmail,userId,userIsAdmin } = useContext(UserContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [horariosOcupados, setHorariosOcupados] = useState({});
-  const [agendamentosPorData, setAgendamentosPorData] = useState([]);
+  const [produtos, setProdutos] = useState([])
+  const [horarios, setHorarios] = useState([])
+  const [horaClick, setHoraClick] = useState([])
+  const [servicoClick, setServClick] = useState([])
+  const [servicoAgenda, setServAgend] = useState([])
+  const [cliente, setCliente] = useState([])
+  const [profissional, setProf] = useState([])
+  const [phoneCliente, setPhone] = useState([])
+  const [horaAgenda, setHoraAgend] = useState([])
+  const { userEmail,userId,userIsAdmin } = useContext(UserContext)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [horariosOcupados, setHorariosOcupados] = useState({})
+  const [agendamentosPorData, setAgendamentosPorData] = useState([])
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token")
   const config = {
     headers: {
         Authorization: `Bearer ${token}`
     }
-};
-
-
+}
 
   const fetchProdutos = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/listar", config);
-        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config);
-
+        const response = await axios.get("http://localhost:8080/listar", config)
+        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config)
         
         if (userIsAdmin) {
-          setProdutos(response.data); // Define os produtos retornados pela API no estado
+          setProdutos(response.data)
       } else {
-        const produtosFiltrados = response.data.filter(produto => produto.usuarios.some(user => user.id === userId));
-        setProdutos(produtosFiltrados);
+        const produtosFiltrados = response.data.filter(produto => produto.usuarios.some(user => user.id === userId))
+        setProdutos(produtosFiltrados)
       }
         setHorarios(responseHorario.data)
     } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error("Erro ao buscar produtos:", error)
     }
-};
+}
 
 const fetchAgendamentosPorData = async () => {
-  const dataSemBarras = onDateSelect.replace(/\//g, '');
+  const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config);
+    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config)
 
-    let agendamentosFiltrados = [];
+    let agendamentosFiltrados = []
     if (userIsAdmin) {
-      agendamentosFiltrados = response.data;
+      agendamentosFiltrados = response.data
     } else {
-      agendamentosFiltrados = response.data.filter(agendamento => agendamento.funcionario.id === userId);
+      agendamentosFiltrados = response.data.filter(agendamento => agendamento.funcionario.id === userId)
     }
-    setAgendamentosPorData(agendamentosFiltrados);
+    setAgendamentosPorData(agendamentosFiltrados)
 
-    const produtosCodigos = produtos.map(produto => produto.codigo);
+    const produtosCodigos = produtos.map(produto => produto.codigo)
 
     produtosCodigos.forEach(async (produtoCodigo) => {
-      // Variável local para armazenar o valor atual de agendamentosPorData
-      const agendamentosAtuais = agendamentosFiltrados;
+      const agendamentosAtuais = agendamentosFiltrados
 
       const agendamentosProdutoSelecionado = agendamentosAtuais
-        .filter(agendamento => agendamento.produto.codigo === produtoCodigo);
+        .filter(agendamento => agendamento.produto.codigo === produtoCodigo)
 
-      // Filtrar apenas os horários ocupados para o produto específico
       const horariosOcupadosProduto = agendamentosProdutoSelecionado
-        .map(agendamento => agendamento.horario.id);
-
-      // Atualizar os horários ocupados apenas para o produto específico
+        .map(agendamento => agendamento.horario.id)
       setHorariosOcupados(prevState => ({
         ...prevState,
         [produtoCodigo]: horariosOcupadosProduto,
-      }));
-    });
+      }))
+    })
   } catch (error) {
-    console.error("Erro ao buscar agendamentos:", error);
+    console.error("Erro ao buscar agendamentos:", error)
   }
-};
-
-
-useEffect(() => {
-  fetchProdutos();
-}, [produtoAdicionado]);
+}
 
 useEffect(() => {
-  fetchAgendamentosPorData();
-}, [onDateSelect, produtos,exclusao]);
+  fetchProdutos()
+}, [produtoAdicionado])
+
+useEffect(() => {
+  fetchAgendamentosPorData()
+}, [onDateSelect, produtos,exclusao])
 
 
 const formatarHorario = (dataHora) => {
-  return dataHora.substring(0, 5); // Extrai os primeiros 5 caracteres (HH:mm)
-};
+  return dataHora.substring(0, 5)
+}
 
 const findProdutoByIndex = (index) => {
-  return produtos[index];
-};
+  return produtos[index]
+}
 
 const findHorarioById = (horarioId) => {
-  return horarios.find((horario) => horario.id === horarioId);
-};
+  return horarios.find((horario) => horario.id === horarioId)
+}
 
 
 
 const handleClickHorario = async (produtoIndex, horarioId) => {   
-    const produto = findProdutoByIndex(produtoIndex);
-    const horario = findHorarioById(horarioId);
-    const horarioObjeto = horarios.find((horario) => horario.id === horarioId);
-    setServClick(produto.nome);
-    setHoraClick(formatarHorario(horario.dataHora));
-    setServAgend(produto);
-    setHoraAgend(horarioObjeto);
+    const produto = findProdutoByIndex(produtoIndex)
+    const horario = findHorarioById(horarioId)
+    const horarioObjeto = horarios.find((horario) => horario.id === horarioId)
+    setServClick(produto.nome)
+    setHoraClick(formatarHorario(horario.dataHora))
+    setServAgend(produto)
+    setHoraAgend(horarioObjeto)
     
-    // Busca pelo agendamento correspondente dentro do estado agendamentosPorData
     const agendamento = agendamentosPorData.find(
       (agendamento) =>
         agendamento.produto.codigo === produto.codigo &&
         agendamento.horario.id === horarioId
-    );
+    )
   
-    // Verificar se existe um agendamento para exibir
     if (agendamento) {
         handleOpenModal()
         setCliente(agendamento.usuario.userName)
-        setPhone(agendamento.usuario.userName)
+        setPhone(agendamento.usuario.phone)
         setProf(agendamento.funcionario.userName)
     } else {
-      console.log("Nenhum agendamento encontrado para este horário.");
+      console.log("Nenhum agendamento encontrado para este horário.")
     }
-  };
+  }
   
   const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
   
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
   
 
 
@@ -170,7 +160,7 @@ return (
                 <ul className="agendamento-celula">
 
                 <li className="celula-livre">
-                  <p>
+                  <p className="horario-agendamento">
                   {formatarHorario(horario.dataHora)}
                   </p>
                   </li>
@@ -227,7 +217,7 @@ return (
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default TabelaAgenda;
+export default TabelaAgenda

@@ -1,20 +1,20 @@
-import React, { useState,useContext } from "react";
-import "./Style.css";
-import Navegacao from "../../components/Navegacao/Navegacao";
+import React, { useState,useContext } from "react"
+import "./Style.css"
+import Navegacao from "../../components/Navegacao/Navegacao"
 import Produto from "../../components/NovoProduto/Produto"
 import ListaServico from "../../components/ListaServico/ListaServico"
-import { UserContext } from "../../Context/Provider";
+import { UserContext } from "../../Context/Provider"
 
 
 
 function Servicos() {
-  const [produtoAdicionado, setProdutoAdicionado] = useState(false);
-  const { userIsAdmin } = useContext(UserContext);
+  const [produtoAdicionado, setProdutoAdicionado] = useState(false)
+  const { userIsAdmin } = useContext(UserContext)
   
   
   const handleProdutoAdicionado = () => {
-    setProdutoAdicionado(!produtoAdicionado); 
-};
+    setProdutoAdicionado(!produtoAdicionado) 
+}
 
   return (
     <div className="container-home-service">
@@ -46,7 +46,7 @@ function Servicos() {
           </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Servicos;
+export default Servicos

@@ -8,8 +8,12 @@
 
 .header-func-tabela{
     width: 100%;
-   
 }
+
+.clickable-icon {
+    cursor: pointer;
+}
+
 .header-func-tabela ul{
     display: flex;
     border-bottom: 1px solid var(--White-Base-02, #E8E7E7);

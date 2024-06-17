@@ -60,10 +60,26 @@
     width: 100%;
     display: flex;
     gap: 20px;
-  
+    justify-content: space-between;
+
 }
 .lista-agenda-container{
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+.container-agenda-user{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title-agenda{
+    color: var(--Black-Cinza-03, #454545);
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }

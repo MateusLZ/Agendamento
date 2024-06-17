@@ -10,7 +10,6 @@ import Lixeira from "../../images/Trash.svg"
 const Agendamentos = ({ onAgendamentoExcluido }) => {
     const [agendamentos, setAgendamentos] = useState([])
     const { userId } = useContext(UserContext)
-    const tresPrimeirosAgendamentos = agendamentos.slice(0, 3)
     const token = localStorage.getItem("token")
     const config = {
         headers: {
@@ -74,7 +73,7 @@ const Agendamentos = ({ onAgendamentoExcluido }) => {
     return ( 
         <div>
             <div className="container-agendamento">
-                {tresPrimeirosAgendamentos.map(agendamento => (
+                {agendamentos.map(agendamento => (
                     <div className="agenda-container" key={agendamento.id}>
 
                         <div className="agendamento-card">

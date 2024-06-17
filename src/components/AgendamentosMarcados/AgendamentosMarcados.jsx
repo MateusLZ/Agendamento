@@ -1,128 +1,117 @@
-import "./Style.css";
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import "./Style.css"
+import React, { useState, useEffect, useContext } from "react"
+import axios from "axios"
 import Filtro from "../../images/Filter.svg"
 import ChevronDown from "../../images/Caretdown.svg"
-import Calendario from "../../images/calenderBlack.svg";
-import Relogio from "../../images/Clock.svg";
-import { ImSad } from "react-icons/im";
-import { UserContext } from "../../Context/Provider";
+import Calendario from "../../images/calenderBlack.svg"
+import Relogio from "../../images/Clock.svg"
+import { ImSad } from "react-icons/im"
+import { UserContext } from "../../Context/Provider"
 
 
 
 
 function AgendamentosMarcados({  onDateSelect}) {
-  const [agendamentosPorData, setAgendamentosPorData] = useState([]);
-  const [produtos, setProdutos] = useState([]);
-  const [mostrarProdutos, setMostrarProdutos] = useState(false);
-  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
-  const { userEmail,userId,userIsAdmin } = useContext(UserContext);
+  const [agendamentosPorData, setAgendamentosPorData] = useState([])
+  const [produtos, setProdutos] = useState([])
+  const [mostrarProdutos, setMostrarProdutos] = useState(false)
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null)
+  const { userEmail,userId,userIsAdmin } = useContext(UserContext)
 
 
   const toggleMostrarProdutos = () => {
-    setMostrarProdutos(!mostrarProdutos);
-  };
+    setMostrarProdutos(!mostrarProdutos)
+  }
 
-  const token = localStorage.getItem("token"); 
+  const token = localStorage.getItem("token") 
   const config = {
     headers: {
         Authorization: `Bearer ${token}`
     }
-};
+}
 
 const fetchProdutos = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/listar", config);
+        const response = await axios.get("http://localhost:8080/listar", config)
         if (userIsAdmin) {
-          setProdutos(response.data); // Define os produtos retornados pela API no estado
+          setProdutos(response.data) 
       } else {
-        const produtosFiltrados = response.data.filter(produto => produto.usuarios.some(user => user.id === userId));
-        setProdutos(produtosFiltrados);
+        const produtosFiltrados = response.data.filter(produto => produto.usuarios.some(user => user.id === userId))
+        setProdutos(produtosFiltrados)
       }
     } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error("Erro ao buscar produtos:", error)
     }
-};
+}
 
 
 const fetchAgendamentosPorData = async () => {
-  const dataSemBarras = onDateSelect.replace(/\//g, '');
+  const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config);
-    let agendamentosFiltrados = [];
+    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config)
+    let agendamentosFiltrados = []
     if (userIsAdmin) {
-      agendamentosFiltrados = response.data;
+      agendamentosFiltrados = response.data
     } else {
-      agendamentosFiltrados = response.data.filter(agendamento => agendamento.funcionario.id === userId);
+      agendamentosFiltrados = response.data.filter(agendamento => agendamento.funcionario.id === userId)
     }
-    setAgendamentosPorData(agendamentosFiltrados);
+    setAgendamentosPorData(agendamentosFiltrados)
    
   } catch (error) {
-    console.error("Erro ao buscar agendamentos:", error);
+    console.error("Erro ao buscar agendamentos:", error)
   }
-};
+}
 
 
 useEffect(() => {
-  fetchAgendamentosPorData();
-  fetchProdutos();
-}, [onDateSelect, ]);
+  fetchAgendamentosPorData()
+  fetchProdutos()
+}, [onDateSelect, ])
 
   
 const handleProdutoSelecionado = (codigoProduto) => {
-    setProdutoSelecionado(codigoProduto);
-    setMostrarProdutos(false); // Fechar a lista de produtos após selecionar um
-  };
+    setProdutoSelecionado(codigoProduto)
+    setMostrarProdutos(false) 
+  }
 
   const formatarData = (data) => {
-    // Extrair dia, mês e ano da string no formato "DDMMYY"
-
-    const dia = data.substring(0, 2);
-    const mes = data.substring(2, 4);
-    const ano = `20${data.substring(4)}`;
+    const dia = data.substring(0, 2)
+    const mes = data.substring(2, 4)
+    const ano = `20${data.substring(4)}`
     
-    // Converter para um objeto Date
-    const dataObj = new Date(`${ano}-${mes }-${dia}`);
+    const dataObj = new Date(`${ano}-${mes }-${dia}`)
 
-    dataObj.setUTCDate(dataObj.getUTCDate() + 1);
+    dataObj.setUTCDate(dataObj.getUTCDate() + 1)
   
-    // Mapear o nome do dia da semana
     const diasSemana = [
       "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", 
       "Quinta-feira", "Sexta-feira", "Sábado"
-    ];
+    ]
     
-    // Mapear o nome do mês
     const meses = [
       "janeiro", "fevereiro", "março", "abril", "maio", "junho",
       "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-    ];
+    ]
   
-    // Extrair o dia da semana, dia, mês e ano
-    const diaSemana = diasSemana[dataObj.getDay()];
-    const diaNumero = dataObj.getDate();
-    const nomeMes = meses[dataObj.getMonth()];
+    const diaSemana = diasSemana[dataObj.getDay()]
+    const diaNumero = dataObj.getDate()
+    const nomeMes = meses[dataObj.getMonth()]
   
-    return `${diaSemana}, ${diaNumero} de ${nomeMes}`;
-  };
+    return `${diaSemana}, ${diaNumero} de ${nomeMes}`
+  }
   
   const formatarHorario = (hora) => {
-    // Extrair apenas a hora da string no formato "HH:mm:ss"
-    const horaAtual = hora.substring(0, 5);
+    const horaAtual = hora.substring(0, 5)
   
-    // Converter a string de hora para um objeto Date
-    const horaInicio = new Date(`1970-01-01T${horaAtual}:00`);
+    const horaInicio = new Date(`1970-01-01T${horaAtual}:00`)
     
-    // Adicionar 1 hora ao horário de início
-    const horaFim = new Date(horaInicio.getTime() + 60 * 60 * 1000);
+    const horaFim = new Date(horaInicio.getTime() + 60 * 60 * 1000)
   
-    // Formatar as horas para exibição
-    const horaInicioFormatada = horaInicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const horaFimFormatada = horaFim.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const horaInicioFormatada = horaInicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    const horaFimFormatada = horaFim.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   
-    // Retornar o intervalo de horas formatado
-    return `${horaInicioFormatada} - ${horaFimFormatada}`;
-  };
+    return `${horaInicioFormatada} - ${horaFimFormatada}`
+  }
   
   
 
@@ -198,16 +187,13 @@ return (
                 </div>
             </li>
 </div>
-
         </ul>
       </div>
        ))}
-  
-     
 </div>
 
     </div>
-  );
+  )
 }
 
-export default AgendamentosMarcados;
+export default AgendamentosMarcados

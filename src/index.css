@@ -18,6 +18,7 @@ ul {
 a{
     list-style: none;
     text-decoration: none;
+    color: #C9615A;
 }
 p,ul,h2{
     margin: 0px;

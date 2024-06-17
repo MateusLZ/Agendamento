@@ -1,4 +1,3 @@
-
 import "./style.css"
 
 
@@ -17,7 +16,7 @@ const ButtonCustomizado = ({
             onClick={onClick}>
                 {text}
                 </button>
-    );
+    )
 }
  
-export default ButtonCustomizado;
+export default ButtonCustomizado

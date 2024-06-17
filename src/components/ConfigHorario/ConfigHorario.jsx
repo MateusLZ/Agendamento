@@ -1,95 +1,96 @@
-import React, { useState, useEffect } from "react";
-import { FaPlus } from "react-icons/fa6";
-import axios from "axios";
-import Modal from "../Modal";
-import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu";
+import React, { useState, useEffect } from "react"
+import { FaPlus } from "react-icons/fa6"
+import axios from "axios"
+import Modal from "../Modal"
+import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu"
 import "./Style.css"
-import { FaTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
+
 
 
 const ConfigHorario = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [horarios, setHorarios] = useState([]);
-    const [horariosAtivos, setHorariosAtivos] = useState([]);
-    const [idsSelecionados, setIdsSelecionados] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [horarios, setHorarios] = useState([])
+    const [horariosAtivos, setHorariosAtivos] = useState([])
+    const [idsSelecionados, setIdsSelecionados] = useState([])
 
 
     useEffect(() => {
         const fetchHorarios = async () => {
             try {
-                const token = localStorage.getItem("token");
+                const token = localStorage.getItem("token")
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
-                };
-                const response = await axios.get("http://localhost:8080/horarios/listar", config);
-                const responseTwo = await axios.get("http://localhost:8080/horarios/ativos", config);
+                }
+                const response = await axios.get("http://localhost:8080/horarios/listar", config)
+                const responseTwo = await axios.get("http://localhost:8080/horarios/ativos", config)
 
                 const horariosAtivos = responseTwo.data
-                const horariosInativos = response.data.filter(horario => !horario.ativo);
-                setHorarios(horariosInativos);
+                const horariosInativos = response.data.filter(horario => !horario.ativo)
+                setHorarios(horariosInativos)
                 setHorariosAtivos(horariosAtivos)
             } catch (error) {
-                console.error("Erro ao buscar horários:", error);
+                console.error("Erro ao buscar horários:", error)
             }
-        };
-        fetchHorarios();
-    }, []);
+        }
+        fetchHorarios()
+    }, [])
       
     const handleOpenModal = () => {
-        setIsModalOpen(true);
-      };
+        setIsModalOpen(true)
+      }
     
       const handleCloseModal = () => {
-        setIsModalOpen(false);
-      };
+        setIsModalOpen(false)
+      }
 
     const handleHorariosSelecionadosChange = (values) => {
-        const selectedIds = values.map(value => value.split(':')[3]);
-        setIdsSelecionados(selectedIds);
-    };
+        const selectedIds = values.map(value => value.split(':')[3])
+        setIdsSelecionados(selectedIds)
+    }
 
     const cadastrarHorarios = async () => {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token")
             const config = {    
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            };
+            }
             await Promise.all(idsSelecionados.map(async (id) => {
-                await axios.put(`http://localhost:8080/horarios/ativar/${id}`, { ativo: true }, config);
-            }));
+                await axios.put(`http://localhost:8080/horarios/ativar/${id}`, { ativo: true }, config)
+            }))
             // Atualiza a lista de horários ativos após a edição
-            const response = await axios.get("http://localhost:8080/horarios/ativos", config);
-            setHorariosAtivos(response.data);
+            const response = await axios.get("http://localhost:8080/horarios/ativos", config)
+            setHorariosAtivos(response.data)
             handleCloseModal()
         } catch (error) {
-            console.error("Erro ao enviar horários para o backend:", error);
+            console.error("Erro ao enviar horários para o backend:", error)
         }
-    };
+    }
       
     const excluirHorarios = async (id) => {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token")
             const config = {    
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            };
-                await axios.put(`http://localhost:8080/horarios/desativar/${id}`, { ativo: false }, config);
+            }
+                await axios.put(`http://localhost:8080/horarios/desativar/${id}`, { ativo: false }, config)
             // Atualiza a lista de horários ativos após a edição
-            const response = await axios.get("http://localhost:8080/horarios/ativos", config);
-            setHorariosAtivos(response.data);
+            const response = await axios.get("http://localhost:8080/horarios/ativos", config)
+            setHorariosAtivos(response.data)
         } catch (error) {
-            console.error("Erro ao enviar horários para o backend:", error);
+            console.error("Erro ao enviar horários para o backend:", error)
         }
-    };
+    }
       
     const formatarHorario = (dataHora) => {
-        return dataHora.substring(0, 5); // Extrai os primeiros 5 caracteres (HH:mm)
-      };
+        return dataHora.substring(0, 5) // Extrai os primeiros 5 caracteres (HH:mm)
+      }
       
     return (
        <div>
@@ -126,7 +127,7 @@ const ConfigHorario = () => {
                 <p>{formatarHorario(horario.dataHora)}</p>
                 </div>
                 <div>
-                <FaTrashAlt onClick={() => excluirHorarios(horario.id)} style={{ cursor: "pointer" }} />
+                <FaRegTrashAlt size={16} onClick={() => excluirHorarios(horario.id)} style={{ cursor: "pointer" }} />
                 </div>
             </li>
 
@@ -160,7 +161,7 @@ const ConfigHorario = () => {
            </div>
             
         </div>
-    );
-};
+    )
+}
 
-export default ConfigHorario;
+export default ConfigHorario

@@ -1,5 +1,5 @@
 import "./Style.css"
-import React from "react";
+import React from "react"
 
 
 
@@ -17,7 +17,7 @@ const InputCustomizado = ({ name, placeholder, onChange, type,color,value }) => 
            type={type}
          />
         </>
-    );
+    )
 }
  
-export default InputCustomizado;
+export default InputCustomizado

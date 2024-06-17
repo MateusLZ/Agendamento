@@ -59,6 +59,7 @@ line-height: normal;
 display: flex;
 flex-direction: row;
 gap: 26px;
+justify-content: space-between;
 }
 .table-calendar h2,.title-agenda{
     color: var(--Black-Cinza-03, #454545);
@@ -84,4 +85,10 @@ padding-top: 32px;
 display: flex;
 flex-direction: column;
 gap: 10px;
+}
+
+.mais-horarios{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

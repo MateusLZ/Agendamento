@@ -1,19 +1,19 @@
-import "./Style.css";
-import Navegacao from "../../components/Navegacao/Navegacao";
+import "./Style.css"
+import Navegacao from "../../components/Navegacao/Navegacao"
 import MinhaConta from "../../components/MinhaConta/MinhaConta.jsx"
 import ConfigHorario from "../../components/ConfigHorario/ConfigHorario.jsx"
-import React, { useState,useContext } from "react";
-import { UserContext } from "../../Context/Provider";
+import React, { useState,useContext } from "react"
+import { UserContext } from "../../Context/Provider"
 
 
 
 function Profile() {
-  const { userIsAdmin} = useContext(UserContext);
-  const [isMinhaConta, setIsMinhaConta] = useState(true); 
+  const { userIsAdmin} = useContext(UserContext)
+  const [isMinhaConta, setIsMinhaConta] = useState(true) 
 
   const toggleComponent = () => {
-    setIsMinhaConta(!isMinhaConta);
-  };
+    setIsMinhaConta(!isMinhaConta)
+  }
  
   return (
     <div className="container-home-config">
@@ -58,7 +58,7 @@ function Profile() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

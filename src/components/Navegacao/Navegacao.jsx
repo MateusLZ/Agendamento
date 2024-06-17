@@ -1,67 +1,72 @@
-import Botao from "../Botao/Botao";
-import { FaRegUserCircle } from "react-icons/fa";
-import { UserContext } from "../../Context/Provider";
-import React, { useContext, useEffect, useState } from "react";
-import logoSalao from "../../images/iconSalao.png";
-import { useNavigate } from "react-router-dom";
-import { FaChevronDown,FaChevronUp  } from "react-icons/fa6";
+import Botao from "../Botao/Botao"
+import { FaRegUserCircle } from "react-icons/fa"
+import { UserContext } from "../../Context/Provider"
+import React, { useContext, useEffect, useState } from "react"
+import logoSalao from "../../images/iconSalao.png"
+import { useNavigate } from "react-router-dom"
+import { FaChevronDown,FaChevronUp  } from "react-icons/fa6"
 
-import "./Style.css";
+import "./Style.css"
 
 function Navegacao() {
-    const { userName, userIsAdmin, logout, userRole } = useContext(UserContext);
-    const [nomeRole, setNomeRole] = useState("");
-    const [mostrarParagrafo, setMostrarParagrafo] = useState(false);
-    const navigate = useNavigate();
+    const { userName, userIsAdmin, logout, userRole } = useContext(UserContext)
+    const [nomeRole, setNomeRole] = useState("")
+    const [mostrarParagrafo, setMostrarParagrafo] = useState(false)
+    const [userNameNav, setUserNameNav] = useState(userName)
+    const navigate = useNavigate()
 
     const toggleParagrafo = () => {
-        setMostrarParagrafo(!mostrarParagrafo);
-    };
+        setMostrarParagrafo(!mostrarParagrafo)
+    }
 
 
     useEffect(() => {
-        fetchNameRole();
+        fetchNameRole()
         
-    }, [userRole]);
+    }, [userRole])
+
+    useEffect(() => {
+        setUserNameNav(userName)
+    }, [userName])
 
     const fetchNameRole = () => {
         switch (userRole) {
             case "ADMIN":
-                setNomeRole("Administrador");
-                break;
+                setNomeRole("Administrador")
+                break
             case "FUNCIONARIO":
-                setNomeRole("Funcionário");
-                break;
+                setNomeRole("Funcionário")
+                break
             default:
-                setNomeRole("");
-                break;
+                setNomeRole("")
+                break
         }
-    };
+    }
 
     const handleLogout = () => {
-        logout();
-        navigate("/");
-    };
+        logout()
+        navigate("/")
+    }
 
     const handleNavigateToHome = () => {
-        navigate("/home");
-    };
+        navigate("/home")
+    }
 
     const handleNavigateToAgendamentos = () => {
-        navigate("/agenda"); // Substitua com a rota dos agendamentos
-    };
+        navigate("/agenda")
+    }
 
     const handleNavigateToPerfil = () => {
-        navigate("/perfil"); // Substitua com a rota do perfil
-    };
+        navigate("/perfil")
+    }
 
     const handleNavigateToServicos = () => {
-        navigate("/servicos"); // Substitua com a rota dos serviços
-    };
+        navigate("/servicos") 
+    }
 
     const handleNavigateToFuncionarios = () => {
-        navigate("/funcionarios"); // Substitua com a rota dos funcionários
-    };
+        navigate("/funcionarios")
+    }
 
     return (
         <div className="menu-rota">
@@ -71,10 +76,10 @@ function Navegacao() {
             </div>
             <nav className="navegacao">
                 <ul className="header-menu">
-                    <Botao text='Início' icon={"home"} onClick={handleNavigateToHome} />
-                    { (userRole === "FUNCIONARIO" || userIsAdmin) && (
+                    {(userRole === "USER" && (
+                        <Botao text='Início' icon={"home"} onClick={handleNavigateToHome} />
+                    ))}
     <Botao text='Agendamentos' icon={"calendar"} onClick={handleNavigateToAgendamentos} />
-)}
                     <Botao text='Serviços' icon={'briefcase'} onClick={handleNavigateToServicos} />
                     {userIsAdmin && <Botao text='Funcionários' icon={'users'} onClick={handleNavigateToFuncionarios} />}
 <Botao text='Configurações' icon={'config'} onClick={handleNavigateToPerfil} />
@@ -86,7 +91,7 @@ function Navegacao() {
                         <FaRegUserCircle size={44} />
                     </div>
                     <div className="nome-user">
-                        <p>{userName}</p>
+                        <p>{userNameNav}</p>
                         <p>{nomeRole}</p>
                     </div>
                     <div className="chevron-sair">
@@ -105,7 +110,7 @@ function Navegacao() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Navegacao;
+export default Navegacao

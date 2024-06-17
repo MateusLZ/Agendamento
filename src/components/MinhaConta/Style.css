@@ -44,4 +44,66 @@
     gap: 6px;
 }
 
+.div-btn-save{
+    display: flex;
+    gap: 20px;
+}
+.btn-salvar{
+    display: flex;
+    padding: 10px 16px 10px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--White-Base-03, #F0F0F0);
+    background: var(--White-Base-04, #FBFBFB);
+    color: var(--Black-Cinza-04, #747474);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    transition: background-color  0.5s ease;
+}
+.color-btn-verme{
+    border: 1px solid  #C9615A;
+    color: #C9615A;
+}
+.btn-salvar:hover{
+    background: var(--White-Base-03, #F0F0F0);
+    color: var(--Black-Cinza-03, #313131);
+}
+.color-btn-verme:hover{
+    border: 1px solid  #C9615A;
+    color: #F0F0F0;
+    background: var(--White-Base-04, #C9615A);
 
+}
+
+.container-modal-senha{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.container-stats{
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.title-modal-stats{
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.color-sucesso {
+    color: #1fd128;
+}
+
+.color-erro {
+    color: #C9615A;
+}

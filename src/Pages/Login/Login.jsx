@@ -1,50 +1,65 @@
-import React, { useState, useContext } from "react";
-import './Style.css';
-import InputCustomizado from "../../components/Input/index";
-import ButtonCustomizado from "../../components/Button/index";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../Context/Provider";
-import imgLogin from "../../images/imgLogin.svg";
-import logoSalao from "../../images/iconSalao.png";
+import React, { useState, useContext, useEffect } from "react"
+import './Style.css'
+import InputCustomizado from "../../components/Input/index"
+import ButtonCustomizado from "../../components/Button/index"
+import { useNavigate } from "react-router-dom"
+import { UserContext } from "../../Context/Provider"
+import imgLogin from "../../images/imgLogin.svg"
+import logoSalao from "../../images/iconSalao.png"
+import Modal from "../../components/Modal"
+import { FaTimes } from "react-icons/fa";
+
 
 
 
 const Login = () => {
-    const [loading, setLoading] = useState(false);
-    const [credentials, setCredentials] = useState({ email: "", password: "", userName: "" });
-    const [isLoginForm, setIsLoginForm] = useState(true); 
-    const navigate = useNavigate();
-    const { login, register } = useContext(UserContext);
+    const [loading, setLoading] = useState(false)
+    const [credentials, setCredentials] = useState({ email: "", password: "", userName: "" })
+    const [isLoginForm, setIsLoginForm] = useState(true) 
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpenStats, setIsModalOpenStats] = useState(false)
+    const [statusMessage, setStatusMessage] = useState("")
+    const [statusType, setStatusType] = useState("")
+    const { login, register,registerError } = useContext(UserContext)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (registerError) {
+            setStatusMessage(registerError)
+        }
+    }, [registerError])
+
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
         try {
-            setLoading(true);
-            let success = false;
+            setLoading(true)
+            let success = false
 
             if (isLoginForm) {
-                success = await login(credentials);
+                success = await login(credentials)
             } else {
                 // Para cadastrar, enviar apenas email e senha
-                const userData = { login: credentials.login, userName:credentials.userName, password: credentials.password,role:1};
-                success = await register(userData);
-                success = await login(credentials);
+                const userData = { login: credentials.login, userName:credentials.userName, password: credentials.password,role:1}
+                success = await register(userData)
+                success = await login(credentials)
 
             }
   
-            // Lidar com a resposta do backend
             if (success) {
-                navigate("/loading");
+                navigate("/loading")
             } else {
-                // Login ou registro falhou
-                alert("Operação inválida. Por favor, tente novamente.");
+                setStatusType("error");
+                setIsModalOpenStats(true);
+                setTimeout(() => {
+                    setIsModalOpenStats(false);
+                }, 2000);
             }
         } catch (err) {
-            console.error("Algo deu errado:", err);
-            alert("Algo deu errado. Por favor, tente novamente.");
+            console.error("Algo deu errado:", err)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     }
 
@@ -52,11 +67,11 @@ const Login = () => {
         setCredentials({
             ...credentials,
             [event.target.name]: event.target.value,
-        });
+        })
     }
 
     const toggleForm = () => {
-        setIsLoginForm(!isLoginForm); // Alternar entre os formulários de login e cadastro
+        setIsLoginForm(!isLoginForm) // Alternar entre os formulários de login e cadastro
     }
 
     return (
@@ -181,8 +196,14 @@ const Login = () => {
                 <img className="img-login" src={imgLogin} alt="" />
             </div>
         </div>
+        <Modal isOpen={isModalOpenStats} onClose={() => setIsModalOpenStats(false)} showCloseButton={false}>
+                <div className={`container-stats title-modal-stats ${statusType === "success" ? "color-sucesso" : "color-erro"}`}>
+                    <p>{statusMessage}</p>
+                    {statusType === "success" ? <FaCheck size={20} /> : <FaTimes size={20} />}
+                </div>
+            </Modal>
         </div>
-    );
+    )
 }
 
-export default Login;
+export default Login

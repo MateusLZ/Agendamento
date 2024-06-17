@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import './Style.css'
 import Forms from '../../components/Forms'
@@ -14,8 +13,8 @@ function Listar() {
   }
 
   //UseStats
-  const[btnCadastrar,setBtnCadastrar] = useState(true);
-  const[produtos,setProdutos] = useState([]);
+  const[btnCadastrar,setBtnCadastrar] = useState(true)
+  const[produtos,setProdutos] = useState([])
   const[objProduto,setObjProduto] = useState(produto)
 
   //UseEffect
@@ -43,7 +42,7 @@ function Listar() {
     .then(retorno => retorno.json())
     .then(retorno_convertido =>{
       if(retorno_convertido.mensagem !== undefined){
-        alert(retorno_convertido.mensagem);
+        alert(retorno_convertido.mensagem)
       }else{
         setProdutos([...produtos,retorno_convertido])
         alert("Produto Cadastrado com sucesso!")
@@ -71,8 +70,8 @@ function Listar() {
 
         //Indice
         let indice = vetorTemp.findIndex((p)=>{
-          return p.codigo === objProduto.codigo;
-        });
+          return p.codigo === objProduto.codigo
+        })
 
         //Remover produto do vetor temp
         vetorTemp.splice(indice, 1)
@@ -110,7 +109,7 @@ function Listar() {
     .then(retorno => retorno.json())
     .then(retorno_convertido =>{
       if(retorno_convertido.mensagem !== undefined){
-        alert(retorno_convertido.mensagem);
+        alert(retorno_convertido.mensagem)
       }else{
         alert("Produto alterado com sucesso!")
 
@@ -119,8 +118,8 @@ function Listar() {
 
         //Indice
         let indice = vetorTemp.findIndex((p)=>{
-          return p.codigo === objProduto.codigo;
-        });
+          return p.codigo === objProduto.codigo
+        })
 
         //Alterar produto do vetor temp
         vetorTemp[indice] =objProduto
