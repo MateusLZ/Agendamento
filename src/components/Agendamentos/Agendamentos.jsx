@@ -23,7 +23,7 @@ const Agendamentos = ({ onAgendamentoExcluido }) => {
         const fetchAgendamentos = async () => {
             try {
                 if (userId) { // Verifica se userId está definido
-                    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorUsuario/${userId}`, config)
+                    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorUsuario/${userId}`, config)
                     // Formata a data e a hora antes de definir o estado
                     const agendamentosFormatados = response.data.map(agendamento => ({
                         ...agendamento,
@@ -62,7 +62,7 @@ const Agendamentos = ({ onAgendamentoExcluido }) => {
 
     const handleExcluirAgendamento = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/agendamentos/remover/${id}`, config)
+            await axios.delete(`https://backendagendamento.onrender.com/agendamentos/remover/${id}`, config)
             // Remove o agendamento excluído da lista
             setAgendamentos(agendamentos.filter(agendamento => agendamento.id !== id))
             onAgendamentoExcluido(true)

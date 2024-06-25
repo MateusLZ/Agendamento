@@ -82,7 +82,7 @@ const Produto = ({ onProdutoAdicionado }) => {
         }
     
         axios
-            .post("http://localhost:8080/cadastrar", novoProduto, config)
+            .post("https://backendagendamento.onrender.com/cadastrar", novoProduto, config)
             .then((response) => {
                 console.log("Produto cadastrado com sucesso:", response.data)
                 handleCloseModal()
@@ -116,7 +116,7 @@ const Produto = ({ onProdutoAdicionado }) => {
                     },
                 }
 
-                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", config)
+                const response = await axios.get("https://backendagendamento.onrender.com/admin/listarPorRole/funcionario", config)
                 setFuncionarios(response.data.content.map((funcionario) => ({ ...funcionario, selecionado: false })))
             } catch (error) {
                 console.error("Erro ao recuperar os dados dos funcionários:", error)

@@ -28,7 +28,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     useEffect(() => {
         const buscarFuncionarios = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/admin/listarPorRole/funcionario", {
+                const response = await axios.get("https://backendagendamento.onrender.com/admin/listarPorRole/funcionario", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setFuncionarios(response.data.content);
@@ -86,7 +86,7 @@ const ListaServico = ({ produtoAdicionado }) => {
 
     const fetchProdutos = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/listar", {
+            const response = await axios.get("https://backendagendamento.onrender.com/listar", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setProdutos(response.data);
@@ -121,7 +121,7 @@ const ListaServico = ({ produtoAdicionado }) => {
             usuarios: userIds.map(id => ({ id }))  
         };
 
-        axios.put(`http://localhost:8080/editar/${idProduto}`, produtoAtualizado, {
+        axios.put(`https://backendagendamento.onrender.com/editar/${idProduto}`, produtoAtualizado, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((response) => {
@@ -135,7 +135,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     };
 
     const handleExcluirProdutoDoUsuario = () => {
-        axios.delete(`http://localhost:8080/remover/${idProduto}/usuarios`, {
+        axios.delete(`https://backendagendamento.onrender.com/remover/${idProduto}/usuarios`, {
             data: userIds,
             headers: {
                 ...config.headers,
@@ -153,7 +153,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     
 
     const handleExcluirProduto = () => {
-        axios.delete(`http://localhost:8080/remover/${idProduto}`, {
+        axios.delete(`https://backendagendamento.onrender.com/remover/${idProduto}`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((response) => {

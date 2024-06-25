@@ -19,7 +19,7 @@ function Listar() {
 
   //UseEffect
   useEffect(()=>{
-    fetch("http://localhost:8080/listar")
+    fetch("https://backendagendamento.onrender.com/listar")
     .then(retorno => retorno.json())
     .then(retorno_convertido => setProdutos(retorno_convertido))
   },[])
@@ -31,7 +31,7 @@ function Listar() {
 
   //Cadatrar Produto
   const cadastrar = () =>{
-    fetch('http://localhost:8080/cadastrar',{
+    fetch('https://backendagendamento.onrender.com/cadastrar',{
       method:"post",
       body:JSON.stringify(objProduto),
       headers:{
@@ -53,7 +53,7 @@ function Listar() {
   
   //Remover Produto
   const remover = () =>{
-    fetch('http://localhost:8080/remover/' + objProduto.codigo,{
+    fetch('https://backendagendamento.onrender.com/remover/' + objProduto.codigo,{
       method:"delete",
       headers:{
         "Content-type":'application/json',
@@ -98,7 +98,7 @@ function Listar() {
 
   //Alterar Produto
   const alterar = () =>{
-    fetch('http://localhost:8080/alterar',{
+    fetch('https://backendagendamento.onrender.com/alterar',{
       method:"put",
       body:JSON.stringify(objProduto),
       headers:{

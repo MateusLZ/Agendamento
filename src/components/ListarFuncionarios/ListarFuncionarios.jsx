@@ -27,7 +27,7 @@ function ListarFuncionarios({ atualizarLista, setAtualizarLista }) {
                 }
             }
 
-            const response = await axios.get(`http://localhost:8080/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config)
+            const response = await axios.get(`https://backendagendamento.onrender.com/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config)
             setFuncionarios(response.data.content)
         } catch (error) {
             console.error("Erro ao recuperar os dados dos funcionários:", error)
@@ -64,7 +64,7 @@ const totalPages = Math.ceil(funcionarios.length / itemsPerPage)
 
             console.log(funcionarioId)
     
-            await axios.delete(`http://localhost:8080/auth/excluir/${funcionarioId}`, config);
+            await axios.delete(`https://backendagendamento.onrender.com/auth/excluir/${funcionarioId}`, config);
             setAtualizarLista(true)
             setStatusMessage("Funcionario excluido com sucesso");
             setStatusType("success");

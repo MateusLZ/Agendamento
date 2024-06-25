@@ -32,7 +32,7 @@ function AgendamentosMarcados({  onDateSelect}) {
 
 const fetchProdutos = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/listar", config)
+        const response = await axios.get("https://backendagendamento.onrender.com/listar", config)
         if (userIsAdmin) {
           setProdutos(response.data) 
       } else {
@@ -48,7 +48,7 @@ const fetchProdutos = async () => {
 const fetchAgendamentosPorData = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config)
+    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorData/${dataSemBarras}`, config)
     let agendamentosFiltrados = []
     if (userIsAdmin) {
       agendamentosFiltrados = response.data

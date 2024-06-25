@@ -40,7 +40,7 @@ useEffect(() => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:8080/auth/logout",null, config)
+      await axios.post("https://backendagendamento.onrender.com/auth/logout",null, config)
         localStorage.removeItem("token")
         setToken(null)
         setUserIsAdmin(false)
@@ -54,7 +54,7 @@ useEffect(() => {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", credentials)
+      const response = await axios.post("https://backendagendamento.onrender.com/auth/login", credentials)
       if (response.data.token) {
         const token = response.data.token
         localStorage.setItem("token", token)
@@ -72,7 +72,7 @@ useEffect(() => {
 
   const register = async (userData) => {
      try {
-      const response = await axios.post("http://localhost:8080/auth/registrar", userData)
+      const response = await axios.post("https://backendagendamento.onrender.com/auth/registrar", userData)
       if (response.status === 200) {
         return true
       } else { 
@@ -89,7 +89,7 @@ useEffect(() => {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await axios.get("http://localhost:8080/admin/userData", {
+        const response = await axios.get("https://backendagendamento.onrender.com/admin/userData", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

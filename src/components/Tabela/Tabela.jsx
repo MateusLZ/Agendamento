@@ -37,8 +37,8 @@ function Tabela({produtoAdicionado, exclusao , onDateSelect}) {
 
   const fetchProdutos = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/listar", config)
-        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config)
+        const response = await axios.get("https://backendagendamento.onrender.com/listar", config)
+        const responseHorario = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
         setProdutos(response.data) 
         setHorarios(responseHorario.data)
     } catch (error) {
@@ -53,7 +53,7 @@ const fetchAgendamentosPorData = async () => {
   }
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config)
+    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorData/${dataSemBarras}`, config)
 
     setAgendamento(response.data)
     const produtosCodigos = produtos.map(produto => produto.codigo)
@@ -127,7 +127,7 @@ const agendarHorario = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
     const response = await axios.post(
-      "http://localhost:8080/agendamentos/cadastrar",
+      "https://backendagendamento.onrender.com/agendamentos/cadastrar",
       {
         usuario: {
           id: userId,

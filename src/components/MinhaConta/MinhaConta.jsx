@@ -54,7 +54,7 @@ const MinhaConta = () => {
     const handleSave = async () => {
         const token = localStorage.getItem("token"); 
         try {
-            const response = await axios.put("http://localhost:8080/auth/editar", credentials, {
+            const response = await axios.put("https://backendagendamento.onrender.com/auth/editar", credentials, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -98,7 +98,7 @@ const MinhaConta = () => {
         const token = localStorage.getItem("token");
         try {
           const response = await axios.put(
-            "http://localhost:8080/auth/editar/senha",
+            "https://backendagendamento.onrender.com/auth/editar/senha",
             senha,
             {
               headers: {

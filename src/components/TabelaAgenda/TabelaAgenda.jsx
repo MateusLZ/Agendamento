@@ -31,8 +31,8 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
 
   const fetchProdutos = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/listar", config)
-        const responseHorario = await axios.get("http://localhost:8080/horarios/ativos", config)
+        const response = await axios.get("https://backendagendamento.onrender.com/listar", config)
+        const responseHorario = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
         
         if (userIsAdmin) {
           setProdutos(response.data)
@@ -49,7 +49,7 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
 const fetchAgendamentosPorData = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`http://localhost:8080/agendamentos/listarPorData/${dataSemBarras}`, config)
+    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorData/${dataSemBarras}`, config)
 
     let agendamentosFiltrados = []
     if (userIsAdmin) {
