@@ -4,5 +4,5 @@ import { ghPages } from 'vite-plugin-gh-pages';
 
 export default defineConfig({
   plugins: [react(), ghPages()],
-  base: '/Agendamento/', // Substitua por '/nome-do-repositorio/'
+  base: '/', // Substitua por '/nome-do-repositorio/'
 });
