@@ -20,8 +20,7 @@ const UserProvider = ({ children }) => {
         Authorization: `Bearer ${token}`
     }
 }
-const apiUrl = '/api'
-console.log(apiUrl)
+const apiUrl = 'https://backendagendamento.onrender.com'
 
 
 useEffect(() => {
