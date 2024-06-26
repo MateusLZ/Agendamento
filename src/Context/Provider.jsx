@@ -21,6 +21,7 @@ const UserProvider = ({ children }) => {
     }
 }
 const apiUrl = '/api'
+console.log(apiUrl)
 
 
 useEffect(() => {
