@@ -21,12 +21,12 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx"
 
 const router = createBrowserRouter([
   {
-    path: "/Agendamento/",
+    path: "/",
     element: <Login />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/Agendamento/home",
+    path: "/home",
     element: (
       <ProtectedRoute allowedRoles={['USER']}>
         <Home />
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
     element: <LoadingScreen/>,
     errorElement: <ErrorPage />,
   }, {
-    path: "/Agendamento/agenda",
+    path: "/agenda",
     element: (
       <ProtectedRoute allowedRoles={['USER', 'ADMIN','FUNCIONARIO']}>
         <Agenda />
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
   },{
-    path: "/Agendamento/funcionarios",
+    path: "/funcionarios",
     element: (
       <ProtectedRoute allowedRoles={['ADMIN']}>
         <Funcionarios />
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
   },{
-    path: "/Agendamento/perfil",
+    path: "/perfil",
     element: (
       <ProtectedRoute allowedRoles={['USER', 'ADMIN','FUNCIONARIO']}>
         <Profile />
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
   },{
-    path: "/Agendamento/servicos",
+    path: "/servicos",
     element: (
       <ProtectedRoute allowedRoles={['USER', 'ADMIN','FUNCIONARIO']}>
         <Servicos />
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/Agendamento/acesso-negado",
+    path: "/acesso-negado",
     element: <AcessoNegado />,
     errorElement: <ErrorPage />,
   },

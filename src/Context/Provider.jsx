@@ -57,7 +57,6 @@ useEffect(() => {
     try {
       const response = await axios.post(`${apiUrl}/auth/login`, credentials)
       if (response.data.token) {
-        console.log(response)
         const token = response.data.token
         localStorage.setItem("token", token)
         setToken(token)
