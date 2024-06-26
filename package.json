@@ -19,6 +19,7 @@
     "@mui/x-date-pickers": "^7.0.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.10",
     "firebase": "^10.9.0",
     "js-cookie": "^3.0.5",
