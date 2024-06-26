@@ -17,7 +17,7 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
   const [profissional, setProf] = useState([])
   const [phoneCliente, setPhone] = useState([])
   const [horaAgenda, setHoraAgend] = useState([])
-  const { userEmail,userId,userIsAdmin } = useContext(UserContext)
+  const { userEmail,userId,userIsAdmin,apiUrl } = useContext(UserContext)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [horariosOcupados, setHorariosOcupados] = useState({})
   const [agendamentosPorData, setAgendamentosPorData] = useState([])
@@ -31,8 +31,8 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
 
   const fetchProdutos = async () => {
     try {
-        const response = await axios.get("https://backendagendamento.onrender.com/listar", config)
-        const responseHorario = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
+        const response = await axios.get(`${apiUrl}/listar`, config)
+        const responseHorario = await axios.get(`${apiUrl}/horarios/ativos`, config)
         
         if (userIsAdmin) {
           setProdutos(response.data)
@@ -49,7 +49,7 @@ function TabelaAgenda({produtoAdicionado, exclusao , onDateSelect}) {
 const fetchAgendamentosPorData = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorData/${dataSemBarras}`, config)
+    const response = await axios.get(`${apiUrl}/agendamentos/listarPorData/${dataSemBarras}`, config)
 
     let agendamentosFiltrados = []
     if (userIsAdmin) {

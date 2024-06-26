@@ -9,7 +9,7 @@ import Lixeira from "../../images/Trash.svg"
 
 const Agendamentos = ({ onAgendamentoExcluido }) => {
     const [agendamentos, setAgendamentos] = useState([])
-    const { userId } = useContext(UserContext)
+    const { userId,apiUrl } = useContext(UserContext)
     const tresPrimeirosAgendamentos = agendamentos.slice(0, 3)
     const token = localStorage.getItem("token")
     const config = {
@@ -23,7 +23,7 @@ const Agendamentos = ({ onAgendamentoExcluido }) => {
         const fetchAgendamentos = async () => {
             try {
                 if (userId) { // Verifica se userId está definido
-                    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorUsuario/${userId}`, config)
+                    const response = await axios.get(`${apiUrl}/agendamentos/listarPorUsuario/${userId}`, config)
                     // Formata a data e a hora antes de definir o estado
                     const agendamentosFormatados = response.data.map(agendamento => ({
                         ...agendamento,
@@ -62,7 +62,7 @@ const Agendamentos = ({ onAgendamentoExcluido }) => {
 
     const handleExcluirAgendamento = async (id) => {
         try {
-            await axios.delete(`https://backendagendamento.onrender.com/agendamentos/remover/${id}`, config)
+            await axios.delete(`${apiUrl}/agendamentos/remover/${id}`, config)
             // Remove o agendamento excluído da lista
             setAgendamentos(agendamentos.filter(agendamento => agendamento.id !== id))
             onAgendamentoExcluido(true)

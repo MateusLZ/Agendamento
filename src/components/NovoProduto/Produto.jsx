@@ -1,5 +1,5 @@
 // Produto.js
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect,useContext } from "react"
 import Modal from "../Modal"
 import InputCustomizado from "../Input"
 import axios from "axios"
@@ -8,10 +8,13 @@ import { storage } from "../../firebase"
 import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu"
 import { FaPlus } from "react-icons/fa6"
 import "./Style.css"
+import { UserContext } from "../../Context/Provider"
+
 
 
 
 const Produto = ({ onProdutoAdicionado }) => {
+    const { apiUrl } = useContext(UserContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [nomeProduto, setNomeProduto] = useState("")
     const [marcaProduto, setMarcaProduto] = useState("")
@@ -82,7 +85,7 @@ const Produto = ({ onProdutoAdicionado }) => {
         }
     
         axios
-            .post("https://backendagendamento.onrender.com/cadastrar", novoProduto, config)
+            .post(`${apiUrl}/cadastrar`, novoProduto, config)
             .then((response) => {
                 console.log("Produto cadastrado com sucesso:", response.data)
                 handleCloseModal()
@@ -116,7 +119,7 @@ const Produto = ({ onProdutoAdicionado }) => {
                     },
                 }
 
-                const response = await axios.get("https://backendagendamento.onrender.com/admin/listarPorRole/funcionario", config)
+                const response = await axios.get(`${apiUrl}/admin/listarPorRole/funcionario`, config)
                 setFuncionarios(response.data.content.map((funcionario) => ({ ...funcionario, selecionado: false })))
             } catch (error) {
                 console.error("Erro ao recuperar os dados dos funcionários:", error)

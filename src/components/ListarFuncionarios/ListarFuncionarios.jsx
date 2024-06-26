@@ -1,5 +1,5 @@
 import "./Style.css"
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect,useContext } from "react"
 import axios from "axios"
 import BallVerd from "../../images/BolinhaVerde.svg"
 import BallCinza from "../../images/BolinhaCinza.svg"
@@ -8,9 +8,12 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import Modal from "../Modal"
 import { FaCheck } from "react-icons/fa6";
 import { FaTimes } from "react-icons/fa";
+import { UserContext } from "../../Context/Provider"
+
 
 
 function ListarFuncionarios({ atualizarLista, setAtualizarLista }) {
+    const { apiUrl } = useContext(UserContext)
     const [funcionarios, setFuncionarios] = useState([])
     const [currentPage, setCurrentPage] = useState(0)
     const [isModalOpenStats, setIsModalOpenStats] = useState(false)
@@ -27,7 +30,7 @@ function ListarFuncionarios({ atualizarLista, setAtualizarLista }) {
                 }
             }
 
-            const response = await axios.get(`https://backendagendamento.onrender.com/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config)
+            const response = await axios.get(`${apiUrl}/admin/listarPorRole/funcionario?page=${currentPage}&size=${itemsPerPage}`, config)
             setFuncionarios(response.data.content)
         } catch (error) {
             console.error("Erro ao recuperar os dados dos funcionários:", error)
@@ -64,7 +67,7 @@ const totalPages = Math.ceil(funcionarios.length / itemsPerPage)
 
             console.log(funcionarioId)
     
-            await axios.delete(`https://backendagendamento.onrender.com/auth/excluir/${funcionarioId}`, config);
+            await axios.delete(`${apiUrl}/auth/excluir/${funcionarioId}`, config);
             setAtualizarLista(true)
             setStatusMessage("Funcionario excluido com sucesso");
             setStatusType("success");

@@ -1,33 +1,25 @@
-const express = require('express');
-const { createServer: createViteServer } = require('vite');
-const cors = require('cors');
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 
-async function createServer() {
-  const app = express();
-
-  // Configurações de CORS
-  const corsOptions = {
-    origin: 'https://cabeloeart.vercel.app', // substitua pelo seu domínio
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Disposition'],
-    credentials: true,
-    optionsSuccessStatus: 204
-  };
-
-  app.use(cors(corsOptions));
-
-  // Crie o servidor Vite
-  const vite = await createViteServer({
-    server: { middlewareMode: 'html' }
-  });
-
-  // Use o middleware do Vite
-  app.use(vite.middlewares);
-
-  app.listen(3000, () => {
-    console.log('Server is running at http://localhost:3000');
-  });
-}
-
-createServer();
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://backendagendamento.onrender.com', // URL do seu backend real
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+  define: {
+    'process.env': {},
+  },
+});

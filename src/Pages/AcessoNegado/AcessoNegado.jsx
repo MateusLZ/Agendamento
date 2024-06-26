@@ -1,10 +1,8 @@
 import "./Style.css"
-import  { useContext } from "react"
+import React, { useContext } from "react"
 import NotAcessIMG from '../../images/notAcess.gif'
 import { useNavigate } from "react-router-dom"
 import { UserContext } from "../../Context/Provider"
-
-
 
 
 function AcessoNegado() {

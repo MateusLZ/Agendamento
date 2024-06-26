@@ -10,7 +10,7 @@ import { FaTimes } from "react-icons/fa";
 
 
 const MinhaConta = () => {
-    const { userName,userEmail,userPhone,setToken } = useContext(UserContext)
+    const { userName,userEmail,userPhone,setToken,apiUrl } = useContext(UserContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isModalOpenStats, setIsModalOpenStats] = useState(false)
     const [statusMessage, setStatusMessage] = useState("")
@@ -54,7 +54,7 @@ const MinhaConta = () => {
     const handleSave = async () => {
         const token = localStorage.getItem("token"); 
         try {
-            const response = await axios.put("https://backendagendamento.onrender.com/auth/editar", credentials, {
+            const response = await axios.put(`${apiUrl}/auth/editar`, credentials, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -98,7 +98,7 @@ const MinhaConta = () => {
         const token = localStorage.getItem("token");
         try {
           const response = await axios.put(
-            "https://backendagendamento.onrender.com/auth/editar/senha",
+            `${apiUrl}/auth/editar/senha`,
             senha,
             {
               headers: {

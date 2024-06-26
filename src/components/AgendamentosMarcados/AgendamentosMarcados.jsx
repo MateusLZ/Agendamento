@@ -16,7 +16,7 @@ function AgendamentosMarcados({  onDateSelect}) {
   const [produtos, setProdutos] = useState([])
   const [mostrarProdutos, setMostrarProdutos] = useState(false)
   const [produtoSelecionado, setProdutoSelecionado] = useState(null)
-  const { userEmail,userId,userIsAdmin } = useContext(UserContext)
+  const { userEmail,userId,userIsAdmin,apiUrl } = useContext(UserContext)
 
 
   const toggleMostrarProdutos = () => {
@@ -32,7 +32,7 @@ function AgendamentosMarcados({  onDateSelect}) {
 
 const fetchProdutos = async () => {
     try {
-        const response = await axios.get("https://backendagendamento.onrender.com/listar", config)
+        const response = await axios.get(`${apiUrl}/listar`, config)
         if (userIsAdmin) {
           setProdutos(response.data) 
       } else {
@@ -48,7 +48,7 @@ const fetchProdutos = async () => {
 const fetchAgendamentosPorData = async () => {
   const dataSemBarras = onDateSelect.replace(/\//g, '')
   try {
-    const response = await axios.get(`https://backendagendamento.onrender.com/agendamentos/listarPorData/${dataSemBarras}`, config)
+    const response = await axios.get(`${apiUrl}/agendamentos/listarPorData/${dataSemBarras}`, config)
     let agendamentosFiltrados = []
     if (userIsAdmin) {
       agendamentosFiltrados = response.data

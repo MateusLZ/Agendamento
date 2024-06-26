@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useContext } from 'react'
 import './Style.css'
 import Forms from '../../components/Forms'
 import Table from '../../components/Table'
+import { UserContext } from "../../Context/Provider"
+
 
 function Listar() {
 
-  //Objeto Produto
+  const {apiUrl } = useContext(UserContext)
+
   const produto = {
     codigo : 0,
     nome : '',
@@ -19,7 +22,7 @@ function Listar() {
 
   //UseEffect
   useEffect(()=>{
-    fetch("https://backendagendamento.onrender.com/listar")
+    fetch(`${apiUrl}/listar`)
     .then(retorno => retorno.json())
     .then(retorno_convertido => setProdutos(retorno_convertido))
   },[])
@@ -31,7 +34,7 @@ function Listar() {
 
   //Cadatrar Produto
   const cadastrar = () =>{
-    fetch('https://backendagendamento.onrender.com/cadastrar',{
+    fetch(`${apiUrl}/cadastrar`,{
       method:"post",
       body:JSON.stringify(objProduto),
       headers:{
@@ -53,7 +56,7 @@ function Listar() {
   
   //Remover Produto
   const remover = () =>{
-    fetch('https://backendagendamento.onrender.com/remover/' + objProduto.codigo,{
+    fetch(`${apiUrl}/remover/` + objProduto.codigo,{
       method:"delete",
       headers:{
         "Content-type":'application/json',
@@ -98,7 +101,7 @@ function Listar() {
 
   //Alterar Produto
   const alterar = () =>{
-    fetch('https://backendagendamento.onrender.com/alterar',{
+    fetch(`${apiUrl}/alterar`,{
       method:"put",
       body:JSON.stringify(objProduto),
       headers:{

@@ -20,6 +20,7 @@ const UserProvider = ({ children }) => {
         Authorization: `Bearer ${token}`
     }
 }
+const apiUrl = '/api'
 
 
 useEffect(() => {
@@ -40,7 +41,7 @@ useEffect(() => {
 
   const logout = async () => {
     try {
-      await axios.post("https://backendagendamento.onrender.com/auth/logout",null, config)
+      await axios.post(`${apiUrl}/auth/logout`,null, config)
         localStorage.removeItem("token")
         setToken(null)
         setUserIsAdmin(false)
@@ -54,7 +55,7 @@ useEffect(() => {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post("https://backendagendamento.onrender.com/auth/login", credentials)
+      const response = await axios.post(`${apiUrl}/auth/login`, credentials)
       if (response.data.token) {
         const token = response.data.token
         localStorage.setItem("token", token)
@@ -72,7 +73,7 @@ useEffect(() => {
 
   const register = async (userData) => {
      try {
-      const response = await axios.post("https://backendagendamento.onrender.com/auth/registrar", userData)
+      const response = await axios.post(`${apiUrl}/auth/registrar`, userData)
       if (response.status === 200) {
         return true
       } else { 
@@ -89,7 +90,7 @@ useEffect(() => {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await axios.get("https://backendagendamento.onrender.com/admin/userData", {
+        const response = await axios.get(`${apiUrl}/admin/userData`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -133,6 +134,7 @@ useEffect(() => {
     userPhone,
     isActive,
     setUserName,
+    apiUrl
   }
 
   return (

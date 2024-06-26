@@ -13,7 +13,7 @@ import "./Style.css"
 const ListaServico = ({ produtoAdicionado }) => {
     const [produtos, setProdutos] = useState([])
     const [imgURLs, setImgURLs] = useState({}) 
-    const { userIsAdmin } = useContext(UserContext)
+    const { userIsAdmin,apiUrl } = useContext(UserContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [nomeProduto, setNomeProduto] = useState("")
     const [descricaoProduto, setDescricaoProduto] = useState("")
@@ -28,7 +28,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     useEffect(() => {
         const buscarFuncionarios = async () => {
             try {
-                const response = await axios.get("https://backendagendamento.onrender.com/admin/listarPorRole/funcionario", {
+                const response = await axios.get(`${apiUrl}/admin/listarPorRole/funcionario`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setFuncionarios(response.data.content);
@@ -86,7 +86,7 @@ const ListaServico = ({ produtoAdicionado }) => {
 
     const fetchProdutos = async () => {
         try {
-            const response = await axios.get("https://backendagendamento.onrender.com/listar", {
+            const response = await axios.get(`${apiUrl}/listar`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setProdutos(response.data);
@@ -121,7 +121,7 @@ const ListaServico = ({ produtoAdicionado }) => {
             usuarios: userIds.map(id => ({ id }))  
         };
 
-        axios.put(`https://backendagendamento.onrender.com/editar/${idProduto}`, produtoAtualizado, {
+        axios.put(`${apiUrl}/editar/${idProduto}`, produtoAtualizado, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((response) => {
@@ -135,7 +135,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     };
 
     const handleExcluirProdutoDoUsuario = () => {
-        axios.delete(`https://backendagendamento.onrender.com/remover/${idProduto}/usuarios`, {
+        axios.delete(`${apiUrl}/remover/${idProduto}/usuarios`, {
             data: userIds,
             headers: {
                 ...config.headers,
@@ -153,7 +153,7 @@ const ListaServico = ({ produtoAdicionado }) => {
     
 
     const handleExcluirProduto = () => {
-        axios.delete(`https://backendagendamento.onrender.com/remover/${idProduto}`, {
+        axios.delete(`${apiUrl}/remover/${idProduto}`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((response) => {

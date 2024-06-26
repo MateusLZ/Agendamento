@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect,useContext } from "react"
 import { FaPlus } from "react-icons/fa6"
 import axios from "axios"
 import Modal from "../Modal"
 import MultipleOptionsSelectMenu from "../MultipleOptionsSelectMenu/MultipleOptionsSelectMenu"
 import "./Style.css"
 import { FaRegTrashAlt } from "react-icons/fa";
+import { UserContext } from "../../Context/Provider"
+
 
 
 
 const ConfigHorario = () => {
+    const { apiUrl } = useContext(UserContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [horarios, setHorarios] = useState([])
     const [horariosAtivos, setHorariosAtivos] = useState([])
@@ -24,8 +27,8 @@ const ConfigHorario = () => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-                const response = await axios.get("https://backendagendamento.onrender.com/horarios/listar", config)
-                const responseTwo = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
+                const response = await axios.get(`${apiUrl}/horarios/listar`, config)
+                const responseTwo = await axios.get(`${apiUrl}/horarios/ativos`, config)
 
                 const horariosAtivos = responseTwo.data
                 const horariosInativos = response.data.filter(horario => !horario.ativo)
@@ -60,10 +63,10 @@ const ConfigHorario = () => {
                 }
             }
             await Promise.all(idsSelecionados.map(async (id) => {
-                await axios.put(`https://backendagendamento.onrender.com/horarios/ativar/${id}`, { ativo: true }, config)
+                await axios.put(`${apiUrl}/horarios/ativar/${id}`, { ativo: true }, config)
             }))
             // Atualiza a lista de horários ativos após a edição
-            const response = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
+            const response = await axios.get(`${apiUrl}/horarios/ativos`, config)
             setHorariosAtivos(response.data)
             handleCloseModal()
         } catch (error) {
@@ -79,9 +82,9 @@ const ConfigHorario = () => {
                     Authorization: `Bearer ${token}`
                 }
             }
-                await axios.put(`https://backendagendamento.onrender.com/horarios/desativar/${id}`, { ativo: false }, config)
+                await axios.put(`${apiUrl}/horarios/desativar/${id}`, { ativo: false }, config)
             // Atualiza a lista de horários ativos após a edição
-            const response = await axios.get("https://backendagendamento.onrender.com/horarios/ativos", config)
+            const response = await axios.get(`${apiUrl}/horarios/ativos`, config)
             setHorariosAtivos(response.data)
         } catch (error) {
             console.error("Erro ao enviar horários para o backend:", error)

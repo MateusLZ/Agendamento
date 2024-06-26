@@ -1,13 +1,14 @@
 import "./Style.css"
 import Navegacao from "../../components/Navegacao/Navegacao"
 import { UserContext } from "../../Context/Provider"
-import { useContext,useState } from "react"
+import React, { useContext,useState } from "react"
 import Calendario from "../../components/Calendario/Calendario"
 import Tabela from "../../components/Tabela/Tabela"
 import { FaWhatsapp,FaInstagram  } from "react-icons/fa"
 import Agendamentos from "../../components/Agendamentos/Agendamentos.jsx"
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom"
+
 
 
 

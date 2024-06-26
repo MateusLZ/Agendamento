@@ -5,6 +5,7 @@ import Maleta from "../../images/maleta.svg"
 import Perfil from "../../images/perfil.svg"
 import addUser from "../../images/addUser.svg"
 import config from "../../images/config.svg"
+import React from "react"
 
 import "./style.css"
 
